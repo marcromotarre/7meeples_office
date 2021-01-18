@@ -25,14 +25,13 @@ export default function Home() {
 
   let getCategories = async () => {
     const categories = await get_categories();
-    if(categories) {
+    if (categories) {
       setRows(
         categories.map(({ id, name, webname, description }) =>
           createData(id, name, webname, description)
         )
       );
     }
-    console.log(categories);
   };
 
   const StyledTableCell = withStyles((theme) => ({
