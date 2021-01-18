@@ -25,11 +25,13 @@ export default function Home() {
 
   let getCategories = async () => {
     const categories = await get_categories();
-    setRows(
-      categories.map(({ id, name, webname, description }) =>
-        createData(id, name, webname, description)
-      )
-    );
+    if(categories) {
+      setRows(
+        categories.map(({ id, name, webname, description }) =>
+          createData(id, name, webname, description)
+        )
+      );
+    }
     console.log(categories);
   };
 
