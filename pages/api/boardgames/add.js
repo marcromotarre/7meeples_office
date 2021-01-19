@@ -7,6 +7,7 @@ export default async (req, res) => {
     categories,
     mechanisms,
     designers,
+    age,
     playTimeMin,
     playTimeMax,
     numberOfPlayers,
@@ -14,16 +15,19 @@ export default async (req, res) => {
     numberOfPlayersNotRecommended,
     webname = "",
     description = "",
+    average,
+    numVotes,
     expansions,
     expansionOf,
     year,
   } = req.body;
-  console.log(id, categories, name);
+  console.log("average", average);
+  console.log("numVotes", numVotes);
   const boardgame = await query({
     query: `
     mutation MyMutation {
         insert_boardgames_one(object: {
-            webname: "", 
+            webname: "${webname}", 
             playTimeMin: ${playTimeMin}, 
             playTimeMax: ${playTimeMax}, 
             numberOfPlayersNotRecommended: [${numberOfPlayersNotRecommended}], 
@@ -37,6 +41,9 @@ export default async (req, res) => {
             designers: [${designers}], 
             expansions: [${expansions}], 
             expansionOf: [${expansionOf}], 
+            age: ${age}, 
+            average: ${average},
+            numVotes: ${numVotes},
             categories: [${categories}],}) {
           id,
           name, 

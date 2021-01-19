@@ -16,20 +16,19 @@ import Paper from "@material-ui/core/Paper";
 
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import IconButton from "@material-ui/core/IconButton";
+import { get_boardgames } from "../../src/api/boardgames";
 
-export default function Categories() {
+export default function Boardgames() {
   const [rows, setRows] = useState([]);
   useEffect(() => {
-    getCategories();
+    getBoardgames();
   }, []);
 
-  let getCategories = async () => {
-    const categories = await get_categories();
-    if (categories) {
+  let getBoardgames = async () => {
+    const boardgames = await get_boardgames();
+    if (boardgames) {
       setRows(
-        categories.map(({ id, name, webname, description }) =>
-          createData(id, name, webname, description)
-        )
+        boardgames.map(({ id, name, webname }) => createData(id, name, webname))
       );
     }
   };
@@ -64,22 +63,10 @@ export default function Categories() {
 
   const classes = useStyles();
 
-  const clickOnCategory = (index) => {
-    console.log("category", index);
-  };
   return (
     <div className={styles.container}>
       <Head>
         <title>Categories</title>
-        <link rel="icon" href="/favicon.ico" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/icon?family=Material+Icons"
-        />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-        />
       </Head>
 
       <main className={styles.main}>
@@ -92,7 +79,7 @@ export default function Categories() {
             <ArrowBackIosIcon />
           </Link>
         </IconButton>
-        <h1>Categories</h1>
+        <h1>Boardgames</h1>
         <TableContainer component={Paper}>
           <Table className={classes.table} aria-label="customized table">
             <TableHead>
@@ -100,7 +87,6 @@ export default function Categories() {
                 <StyledTableCell>Id</StyledTableCell>
                 <StyledTableCell>Name</StyledTableCell>
                 <StyledTableCell>Webname</StyledTableCell>
-                <StyledTableCell>Description</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -115,9 +101,6 @@ export default function Categories() {
                     </StyledTableCell>
                     <StyledTableCell component="th" scope="row">
                       {row.webname}
-                    </StyledTableCell>
-                    <StyledTableCell component="th" scope="row">
-                      {row.description}
                     </StyledTableCell>
                   </StyledTableRow>
                 </Link>
