@@ -4,8 +4,26 @@ import styles from "../styles/Home.module.css";
 import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import Link from "next/link";
+import { get_user } from "../src/api/credentials";
+var passwordHash = require("password-hash");
+/*
+  next auth
+  https://next-auth.js.org/getting-started/example
+ */
 
 export default function Home() {
+  useEffect(() => {
+    var hashedPassword = passwordHash.generate("1234");
+    console.log(hashedPassword);
+    boom();
+  }, []);
+  const boom = async () => {
+    const user = await get_user({
+      email: "marcromotarre@gmail.com",
+      password: "1234",
+    });
+    console.log("user", user);
+  };
   return (
     <div className={styles.container}>
       <Head>

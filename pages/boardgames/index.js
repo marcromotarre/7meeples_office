@@ -91,7 +91,7 @@ export default function Boardgames() {
             </TableHead>
             <TableBody>
               {rows.map((row, index) => (
-                <Link key={row.id} href={`/categories/${rows[index].id}`}>
+                <Link key={row.id} href={`/boardgames/${rows[index].id}`}>
                   <StyledTableRow onClick={() => clickOnCategory(index)}>
                     <StyledTableCell component="th" scope="row">
                       {row.id}
