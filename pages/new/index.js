@@ -79,19 +79,3 @@ export default function New() {
     </div>
   );
 }
-
-/*
-
-<div>
-            <label>
-              Id:
-              <input
-                onChange={onInputchange}
-                value={id}
-                type="text"
-                name="name"
-              />
-            </label>
-            <button onClick={() => getBoardgameBGG()}>Buscar</button>
-          </div>
-*/

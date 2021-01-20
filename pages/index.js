@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import Link from "next/link";
 import { get_user } from "../src/api/credentials";
+import Header from "../src/components/header";
 var passwordHash = require("password-hash");
 /*
   next auth
@@ -30,6 +31,7 @@ export default function Home() {
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Header></Header>
 
       <main className={styles.main}>
         <Link href={`/new`}>
