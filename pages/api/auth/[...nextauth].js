@@ -8,6 +8,7 @@ const options = {
     // Seconds - How long until an idle session expires and is no longer valid.
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
+
   // Configure one or more authentication providers
   providers: [
     Providers.Credentials({
@@ -21,7 +22,6 @@ const options = {
         const user = {
           id,
           email,
-          name: "marc romo",
         };
         if (user) {
           // Any user object returned here will be saved in the JSON Web Token
@@ -31,11 +31,12 @@ const options = {
         }
       },
     }),
+
     // ...add more providers here
   ],
 
   // A database is optional, but required to persist accounts in a database
-  database: process.env.DATABASE_URL,
+  //database: process.env.DATABASE_URL,
 };
 
 export default (req, res) => NextAuth(req, res, options);

@@ -3,12 +3,17 @@ import { signOut, useSession, signIn } from "next-auth/client";
 import SignIn from "../auth/credentials-signin";
 import axios from "axios";
 import { get_user } from "../../src/api/credentials";
-
+import jwt from "next-auth/jwt";
 export default function Page() {
   const [session, loading] = useSession();
   const [email, setEmail] = useState("marcromotarre@gmail.com");
   const [password, setPassword] = useState("1234");
   console.log(session);
+
+  const t = async () => {
+    const token = await jwt.getToken({ req, secret });
+    console.log("token", token);
+  };
 
   const onEmailChange = (event) => {
     setEmail(event.target.value);
@@ -55,6 +60,7 @@ export default function Page() {
         <>
           Signed in as {session.user.email} <br />
           <button onClick={signOut}>Sign out</button>
+          <button onClick={t}>token</button>
         </>
       )}
     </>

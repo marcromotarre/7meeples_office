@@ -94,7 +94,7 @@ export default function New() {
       }
     });
 
-    await add_boardgame({
+    const game = await add_boardgame({
       id: parseInt(id),
       name,
       year,
@@ -113,8 +113,10 @@ export default function New() {
       numberOfPlayersBest: players.best,
       numberOfPlayersNotRecommended: players.no,
     });
+    if (game) {
+      router.push(`../boardgames/${game.id}`);
+    }
   };
-  console.log("data", data);
 
   return (
     <div>

@@ -17,6 +17,7 @@ import Paper from "@material-ui/core/Paper";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import IconButton from "@material-ui/core/IconButton";
 import { get_boardgames } from "../../src/api/boardgames";
+import Header from "../../src/components/header";
 
 export default function Boardgames() {
   const [rows, setRows] = useState([]);
@@ -66,9 +67,9 @@ export default function Boardgames() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Categories</title>
+        <title>Boardgames</title>
       </Head>
-
+      <Header></Header>
       <main className={styles.main}>
         <IconButton
           color="primary"
@@ -92,7 +93,7 @@ export default function Boardgames() {
             <TableBody>
               {rows.map((row, index) => (
                 <Link key={row.id} href={`/boardgames/${rows[index].id}`}>
-                  <StyledTableRow onClick={() => clickOnCategory(index)}>
+                  <StyledTableRow>
                     <StyledTableCell component="th" scope="row">
                       {row.id}
                     </StyledTableCell>

@@ -13,6 +13,7 @@ import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import Snackbar from "@material-ui/core/Snackbar";
 import { makeStyles } from "@material-ui/core/styles";
 import MuiAlert from "@material-ui/lab/Alert";
+import Header from "../../src/components/header";
 
 const useStyles = makeStyles((theme) => ({
   "@global": {
@@ -89,6 +90,7 @@ export default function Category() {
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Header></Header>
 
       <main className={styles.main}>
         <Snackbar

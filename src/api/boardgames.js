@@ -11,6 +11,44 @@ export const get_boardgames = async () => {
     });
 };
 
+export const get_boardgame = async ({ id }) => {
+  return await axios
+    .post("/api/boardgames/get", {
+      id,
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+
+export const update_boardgame = async ({
+  id,
+  webname,
+  PVP,
+  stock,
+  price,
+  active,
+}) => {
+  return await axios
+    .post("/api/boardgames/update", {
+      id,
+      webname,
+      PVP,
+      stock,
+      price,
+      active,
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+
 export const add_boardgame = async ({
   id,
   name,
