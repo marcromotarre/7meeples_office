@@ -12,10 +12,74 @@ export const getGameFromApiBGG = async (id) => {
 };
 
 export const BGGParser = (gameData) => {
+  const name = (name) => {
+    if (Array.isArray(name)) {
+      return name[0]["#text"];
+    } else {
+      return name["#text"];
+    }
+  };
+
+  const expansions = (expansions) => {
+    if (!expansions) {
+      return [];
+    }
+    if (Array.isArray(expansions)) {
+      return expansions
+        .filter((expansion) => !expansion["@attributes"].inbound)
+        .map((expansion) => expansion["@attributes"].objectid);
+    } else {
+      return [
+        {
+          id: expansions["@attributes"].objectid,
+          name: expansions["#text"],
+        },
+      ];
+    }
+  };
+
+  const expansionOf = (expansions) => {
+    if (!expansions) {
+      return [];
+    }
+
+    if (Array.isArray(expansions)) {
+      return expansions
+        .filter((expansion) => expansion["@attributes"].inbound)
+        .map((expansion) => expansion["@attributes"].objectid);
+    } else {
+      return [
+        {
+          id: expansions["@attributes"].objectid,
+          name: expansions["#text"],
+        },
+      ];
+    }
+  };
+
+  const categories = (categories) => {
+    if (!categories) {
+      return [];
+    }
+    if (Array.isArray(categories)) {
+      return categories.map((category) => ({
+        id: category["@attributes"].objectid,
+        name: category["#text"],
+      }));
+    } else {
+      return [
+        {
+          id: categories["@attributes"].objectid,
+          name: categories["#text"],
+        },
+      ];
+    }
+  };
+
   console.log(gameData.boardgames.boardgame);
   return {
     id: gameData.boardgames.boardgame["@attributes"].objectid,
-    name: gameData.boardgames.boardgame.name[0]["#text"],
+    name: name(gameData.boardgames.boardgame.name),
     year: gameData.boardgames.boardgame.yearpublished["#text"],
     age: gameData.boardgames.boardgame.age["#text"],
     players: playersPoll(gameData),
@@ -42,30 +106,8 @@ export const BGGParser = (gameData) => {
           )
         : [],
     },
-    expansions: Array.isArray(gameData.boardgames.boardgame.boardgameexpansion)
-      ? gameData.boardgames.boardgame.boardgameexpansion
-          .filter((expansion) => !expansion["@attributes"].inbound)
-          .map((expansion) => expansion["@attributes"].objectid)
-      : [
-          {
-            id:
-              gameData.boardgames.boardgame.boardgameexpansion["@attributes"]
-                .objectid,
-            name: gameData.boardgames.boardgame.boardgameexpansion["#text"],
-          },
-        ],
-    expansionOf: Array.isArray(gameData.boardgames.boardgame.boardgameexpansion)
-      ? gameData.boardgames.boardgame.boardgameexpansion
-          .filter((expansion) => expansion["@attributes"].inbound)
-          .map((expansion) => expansion["@attributes"].objectid)
-      : [
-          {
-            id:
-              gameData.boardgames.boardgame.boardgameexpansion["@attributes"]
-                .objectid,
-            name: gameData.boardgames.boardgame.boardgameexpansion["#text"],
-          },
-        ],
+    expansions: expansions(gameData.boardgames.boardgame.boardgameexpansion),
+    expansionOf: expansionOf(gameData.boardgames.boardgame.boardgameexpansion),
     designers: Array.isArray(gameData.boardgames.boardgame.boardgamedesigner)
       ? gameData.boardgames.boardgame.boardgamedesigner.map((designer) => ({
           id: designer["@attributes"].objectid,
@@ -79,19 +121,7 @@ export const BGGParser = (gameData) => {
             name: gameData.boardgames.boardgame.boardgamedesigner["#text"],
           },
         ],
-    categories: Array.isArray(gameData.boardgames.boardgame.boardgamecategory)
-      ? gameData.boardgames.boardgame.boardgamecategory.map((category) => ({
-          id: category["@attributes"].objectid,
-          name: category["#text"],
-        }))
-      : [
-          {
-            id:
-              gameData.boardgames.boardgame.boardgamecategory["@attributes"]
-                .objectid,
-            name: gameData.boardgames.boardgame.boardgamecategory["#text"],
-          },
-        ],
+    categories: categories(gameData.boardgames.boardgame.boardgamecategory),
     mechanisms: Array.isArray(gameData.boardgames.boardgame.boardgamemechanic)
       ? gameData.boardgames.boardgame.boardgamemechanic.map((mechanism) => ({
           id: mechanism["@attributes"].objectid,
