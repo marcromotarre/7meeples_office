@@ -5,27 +5,20 @@ export default async (req, res) => {
   const { email, password } = req.body;
   console.log("email", email);
   console.log("password", password);
-  const user = await query({
+  const { credentials } = await query({
     query: `
       query {
           credentials(where: {email: {_eq: "${email}"}}) {
-            id
             email
             password
           }
         }
     `,
   });
-  if (user.credentials.length > 0) {
-    const credentials = user.credentials[0];
-    console.log(
-      "credentials",
-      passwordHash.verify(password, credentials.password),
-      user.credentials[0].password,
-      password
-    );
-    if (passwordHash.verify(password, credentials.password)) {
-      res.json({ id: credentials.id, email: credentials.email });
+  if (credentials?.length > 0) {
+    if (passwordHash.verify(password, credentials[0].password)) {
+      res.statusCode = 200;
+      res.json({ email: credentials[0].email });
     } else {
       res.statusCode = 200;
       res.json({ error: "password incorrect" });

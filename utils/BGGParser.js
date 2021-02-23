@@ -1,4 +1,16 @@
 import { playersPoll } from "./number-of-players";
+import axios from "axios";
+import xml2json from "./xml2json";
+
+export const getGameFromApiBGG = async (id) => {
+  const result = await axios(
+    `https://www.boardgamegeek.com/xmlapi/boardgame/${id}?stats=1`
+  );
+  var domParser = new DOMParser();
+  var xmlDocument = domParser.parseFromString(result.data, "text/xml");
+  return BGGParser(xml2json(xmlDocument));
+};
+
 export const BGGParser = (gameData) => {
   console.log(gameData.boardgames.boardgame);
   return {
@@ -9,8 +21,10 @@ export const BGGParser = (gameData) => {
     players: playersPoll(gameData),
     playTime: {
       min: gameData.boardgames.boardgame.minplaytime["#text"],
-      max: gameData.boardgames.boardgame.minplaytime["#text"],
+      max: gameData.boardgames.boardgame.maxplaytime["#text"],
     },
+    weight:
+      gameData.boardgames.boardgame.statistics.ratings.averageweight["#text"],
     rating: {
       average:
         gameData.boardgames.boardgame.statistics.ratings.average["#text"],

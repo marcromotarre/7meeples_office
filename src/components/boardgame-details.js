@@ -24,6 +24,7 @@ function BoardGameManagerDetails({ boardGameData }) {
     mechanisms,
     expansions,
     expansionOf,
+    weight,
   } = boardGameData;
   console.log(boardGameData);
   const [name, setName] = useState(nameBGG);
@@ -71,6 +72,7 @@ function BoardGameManagerDetails({ boardGameData }) {
       numberOfPlayers: players.number,
       numberOfPlayersBest: players.best,
       numberOfPlayersNotRecommended: players.no,
+      weight,
     });
   };
   return (

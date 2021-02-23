@@ -1,7 +1,6 @@
 import Head from "next/head";
 
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { BGGParser } from "../../utils/BGGParser";
 import { useRouter } from "next/router";
 import xml2json from "../../utils/xml2json";
@@ -33,7 +32,7 @@ export default function New() {
 
   useEffect(() => {
     if (router.query.id) {
-      getGameFromApiBGG(router.query.id);
+      setDataFromBBG();
     }
   }, [router.query.id]);
 
@@ -41,13 +40,9 @@ export default function New() {
     setWebName(event.target.value);
   };
 
-  const getGameFromApiBGG = async (id) => {
-    const result = await axios(
-      `https://www.boardgamegeek.com/xmlapi/boardgame/${id}?stats=1`
-    );
-    var domParser = new DOMParser();
-    var xmlDocument = domParser.parseFromString(result.data, "text/xml");
-    setData(BGGParser(xml2json(xmlDocument)));
+  const setDataFromBBG = async () => {
+    const _data = await getGameFromApiBGG(router.query.id);
+    setData(_data);
   };
 
   const onSave = async () => {
@@ -56,6 +51,7 @@ export default function New() {
       name,
       age,
       year,
+      weight,
       players,
       playTime,
       rating,
@@ -100,6 +96,7 @@ export default function New() {
       year,
       webname,
       age,
+      weight,
       categories: categories.map((category) => parseInt(category.id)),
       designers: designers.map((designer) => parseInt(designer.id)),
       playTimeMin: parseInt(playTime.min),

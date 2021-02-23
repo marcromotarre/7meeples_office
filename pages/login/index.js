@@ -20,11 +20,11 @@ export default function Header() {
     setPassword(event.target.value);
   };
   const handleSignIn = async () => {
-    const user = await get_user({ email, password });
-    if (!user.error) {
-      const { id, email } = user;
-      if (id && email) {
-        signIn("credentials", { id, email });
+    console.log(email, password);
+    const { error, email: userEmail } = await get_user({ email, password });
+    if (!error) {
+      if (userEmail) {
+        signIn("credentials", { email: userEmail });
       }
     }
   };

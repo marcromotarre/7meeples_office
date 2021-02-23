@@ -16,8 +16,10 @@ import Paper from "@material-ui/core/Paper";
 
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import IconButton from "@material-ui/core/IconButton";
-import { get_boardgames } from "../../src/api/boardgames";
+import { get_boardgames, update_boardgame_bgg } from "../../src/api/boardgames";
 import Header from "../../src/components/header";
+import { BGGParser, getGameFromApiBGG } from "../../utils/BGGParser";
+import xml2json from "../../utils/xml2json";
 
 export default function Boardgames() {
   const [rows, setRows] = useState([]);
@@ -64,6 +66,51 @@ export default function Boardgames() {
 
   const classes = useStyles();
 
+  const updateBoardgamesBggData = async () => {
+    //get all games
+    //for each update data
+    const boardgames = await get_boardgames();
+
+    for (const boardgame of boardgames) {
+      console.log(boardgame.id);
+      const data = await getGameFromApiBGG(boardgame.id);
+      const {
+        id,
+        name,
+        age,
+        year,
+        weight,
+        players,
+        playTime,
+        rating,
+        categories,
+        designers,
+        mechanisms,
+        expansions,
+        expansionOf,
+      } = data;
+      const game_updated = await update_boardgame_bgg({
+        id: parseInt(id),
+        name,
+        year,
+        age,
+        weight,
+        categories: categories.map((category) => parseInt(category.id)),
+        designers: designers.map((designer) => parseInt(designer.id)),
+        playTimeMin: parseInt(playTime.min),
+        playTimeMax: parseInt(playTime.max),
+        expansions: expansions.map((expansion) => parseInt(expansion)),
+        expansionOf: expansionOf.map((expansion) => parseInt(expansion)),
+        mechanisms: mechanisms.map((mechanism) => parseInt(mechanism.id)),
+        average: parseFloat(rating.average),
+        numVotes: parseInt(rating.numVotes),
+        numberOfPlayers: players.number,
+        numberOfPlayersBest: players.best,
+        numberOfPlayersNotRecommended: players.no,
+      });
+    }
+  };
+
   return (
     <div className={styles.container}>
       <Head>
@@ -80,6 +127,7 @@ export default function Boardgames() {
             <ArrowBackIosIcon />
           </Link>
         </IconButton>
+        <button onClick={updateBoardgamesBggData}>Update BGG Data</button>
         <h1>Boardgames</h1>
         <TableContainer component={Paper}>
           <Table className={classes.table} aria-label="customized table">
