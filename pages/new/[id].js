@@ -1,7 +1,7 @@
 import Head from "next/head";
 
 import React, { useState, useEffect } from "react";
-import { BGGParser } from "../../utils/BGGParser";
+import { BGGParser, getGameFromApiBGG } from "../../utils/BGGParser";
 import { useRouter } from "next/router";
 import xml2json from "../../utils/xml2json";
 import BoardGameManagerDetails from "../../src/components/boardgame-details";
