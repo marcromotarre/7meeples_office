@@ -8,6 +8,6 @@ export const isRecommended = (votes) => {
 export const isBest = (votes) => {
   const { best, no, recommended } = votes;
   const total = best + no + recommended;
-  if (best / total >= 0.6) return true;
+  if (best / total >= 0.5) return true;
   return false;
 };

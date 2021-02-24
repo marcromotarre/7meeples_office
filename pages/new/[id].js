@@ -61,7 +61,7 @@ export default function New() {
       expansions,
       expansionOf,
     } = data;
-
+    console.log(data);
     const _designers = await get_designers();
     designers.forEach((designer) => {
       if (!_designers.some(({ id }) => id === parseInt(designer.id))) {
