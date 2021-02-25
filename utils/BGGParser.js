@@ -29,12 +29,14 @@ export const BGGParser = (gameData) => {
         .filter((expansion) => !expansion["@attributes"].inbound)
         .map((expansion) => expansion["@attributes"].objectid);
     } else {
-      return [
-        {
-          id: expansions["@attributes"].objectid,
-          name: expansions["#text"],
-        },
-      ];
+      return !expansions["@attributes"].inbound
+        ? [
+            {
+              id: expansions["@attributes"].objectid,
+              name: expansions["#text"],
+            },
+          ]
+        : [];
     }
   };
 
@@ -48,12 +50,14 @@ export const BGGParser = (gameData) => {
         .filter((expansion) => expansion["@attributes"].inbound)
         .map((expansion) => expansion["@attributes"].objectid);
     } else {
-      return [
-        {
-          id: expansions["@attributes"].objectid,
-          name: expansions["#text"],
-        },
-      ];
+      return expansions["@attributes"].inbound
+        ? [
+            {
+              id: expansions["@attributes"].objectid,
+              name: expansions["#text"],
+            },
+          ]
+        : [];
     }
   };
 
@@ -77,7 +81,8 @@ export const BGGParser = (gameData) => {
   };
 
   console.log(gameData.boardgames.boardgame);
-  return {
+
+  const data = {
     id: gameData.boardgames.boardgame["@attributes"].objectid,
     name: name(gameData.boardgames.boardgame.name),
     year: gameData.boardgames.boardgame.yearpublished["#text"],
@@ -106,6 +111,7 @@ export const BGGParser = (gameData) => {
           )
         : [],
     },
+    image: gameData.boardgames.boardgame.image["#text"],
     expansions: expansions(gameData.boardgames.boardgame.boardgameexpansion),
     expansionOf: expansionOf(gameData.boardgames.boardgame.boardgameexpansion),
     designers: Array.isArray(gameData.boardgames.boardgame.boardgamedesigner)
@@ -140,4 +146,6 @@ export const BGGParser = (gameData) => {
       name: familyType["#text"],
     })),*/
   };
+  console.log(data);
+  return data;
 };

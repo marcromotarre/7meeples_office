@@ -25,7 +25,10 @@ function BoardGameManagerDetails({ boardGameData }) {
     expansions,
     expansionOf,
     weight,
+    image,
   } = boardGameData;
+
+  console.log("image,", image);
   console.log(boardGameData);
   const [name, setName] = useState(nameBGG);
 
@@ -73,6 +76,7 @@ function BoardGameManagerDetails({ boardGameData }) {
       numberOfPlayersBest: players.best,
       numberOfPlayersNotRecommended: players.no,
       weight,
+      imageDefault: image,
     });
   };
   return (
@@ -94,21 +98,6 @@ function BoardGameManagerDetails({ boardGameData }) {
       </div>
       <input type="submit" value="Submit" />
 
-      <p>
-        Ranks:
-        {rating.ranks
-          .map(({ id, name, position }) => `${id}: ${name}(${position})`)
-          .join()}
-      </p>
-      <p>Age: {age}+</p>
-      <p>Year: {year}</p>
-      <p>
-        Players: {players.min} - {players.max} (Recomended:
-        {players.recommended.join()}) (best:{players.best.join()})
-      </p>
-      <p>
-        Play Time: {playTime.min}-{playTime.max} min
-      </p>
       <button onClick={CreateGameData}>Create</button>
     </>
   );

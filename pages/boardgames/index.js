@@ -72,7 +72,6 @@ export default function Boardgames() {
     const boardgames = await get_boardgames();
 
     for (const boardgame of boardgames) {
-      console.log(boardgame.id);
       const data = await getGameFromApiBGG(boardgame.id);
       const {
         id,
@@ -88,6 +87,7 @@ export default function Boardgames() {
         mechanisms,
         expansions,
         expansionOf,
+        image,
       } = data;
       const game_updated = await update_boardgame_bgg({
         id: parseInt(id),
@@ -107,6 +107,7 @@ export default function Boardgames() {
         numberOfPlayers: players.number,
         numberOfPlayersBest: players.best,
         numberOfPlayersNotRecommended: players.no,
+        imageDefault: image,
       });
     }
   };

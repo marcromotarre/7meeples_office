@@ -25,41 +25,44 @@ export default async (req, res) => {
     stock = 0,
     PVP = 0,
     price = 0,
+    imageDefault = "",
   } = req.body;
-  console.log("average", average);
-  console.log("numVotes", numVotes);
+
+  const queryString = `
+mutation MyMutation {
+    insert_boardgames_one(object: {
+        webname: "${webname}", 
+        playTimeMin: ${playTimeMin}, 
+        playTimeMax: ${playTimeMax}, 
+        numberOfPlayersNotRecommended: [${numberOfPlayersNotRecommended}], 
+        numberOfPlayersBest: [${numberOfPlayersBest}], 
+        numberOfPlayers: [${numberOfPlayers}], 
+        name: "${name}",
+        mechechanisms: [${mechanisms}], 
+        id: ${id}, 
+        year: ${year}, 
+        weight: ${weight},
+        description: "", 
+        designers: [${designers}], 
+        expansions: [${expansions}], 
+        expansionOf: [${expansionOf}], 
+        stock: ${stock}, 
+        active: ${active}, 
+        PVP: ${PVP}, 
+        price: ${price}, 
+        age: ${age}, 
+        average: ${average},
+        numVotes: ${numVotes},
+        imageDefault: "${imageDefault}",
+        categories: [${categories}],}) {
+      id,
+      name, 
+    }
+  }
+`;
+
   const boardgame = await query({
-    query: `
-    mutation MyMutation {
-        insert_boardgames_one(object: {
-            webname: "${webname}", 
-            playTimeMin: ${playTimeMin}, 
-            playTimeMax: ${playTimeMax}, 
-            numberOfPlayersNotRecommended: [${numberOfPlayersNotRecommended}], 
-            numberOfPlayersBest: [${numberOfPlayersBest}], 
-            numberOfPlayers: [${numberOfPlayers}], 
-            name: "${name}",
-            mechechanisms: [${mechanisms}], 
-            id: ${id}, 
-            year: ${year}, 
-            weight: ${weight},
-            description: "", 
-            designers: [${designers}], 
-            expansions: [${expansions}], 
-            expansionOf: [${expansionOf}], 
-            stock: ${stock}, 
-            active: ${active}, 
-            PVP: ${PVP}, 
-            price: ${price}, 
-            age: ${age}, 
-            average: ${average},
-            numVotes: ${numVotes},
-            categories: [${categories}],}) {
-          id,
-          name, 
-        }
-      }
-    `,
+    query: queryString,
   });
   res.statusCode = 200;
   res.json(boardgame.insert_boardgames_one);

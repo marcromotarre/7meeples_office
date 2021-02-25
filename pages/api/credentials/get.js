@@ -3,8 +3,6 @@ var passwordHash = require("password-hash");
 
 export default async (req, res) => {
   const { email, password } = req.body;
-  console.log("email", email);
-  console.log("password", password);
   const { credentials } = await query({
     query: `
       query {

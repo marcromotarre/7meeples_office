@@ -15,7 +15,6 @@ var passwordHash = require("password-hash");
 export default function Home() {
   useEffect(() => {
     var hashedPassword = passwordHash.generate("1234");
-    console.log(hashedPassword);
     boom();
   }, []);
   const boom = async () => {
@@ -23,7 +22,6 @@ export default function Home() {
       email: "marcromotarre@gmail.com",
       password: "1234",
     });
-    console.log("user", user);
   };
   return (
     <div className={styles.container}>

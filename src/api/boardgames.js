@@ -68,6 +68,7 @@ export const add_boardgame = async ({
   expansionOf,
   numVotes,
   average,
+  imageDefault,
 }) => {
   return await axios
     .post("/api/boardgames/add", {
@@ -89,6 +90,7 @@ export const add_boardgame = async ({
       expansionOf,
       numVotes,
       average,
+      imageDefault,
     })
     .then((response) => {
       console.log(response.data);
@@ -118,6 +120,7 @@ export const update_boardgame_bgg = async ({
   expansionOf,
   numVotes,
   average,
+  imageDefault,
 }) => {
   return await axios
     .post("/api/boardgames/update_bgg", {
@@ -139,6 +142,7 @@ export const update_boardgame_bgg = async ({
       expansionOf,
       numVotes,
       average,
+      imageDefault,
     })
     .then((response) => {
       return response.data;

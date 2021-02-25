@@ -60,6 +60,7 @@ export default function New() {
       mechanisms,
       expansions,
       expansionOf,
+      image,
     } = data;
     console.log(data);
     const _designers = await get_designers();
@@ -109,6 +110,7 @@ export default function New() {
       numberOfPlayers: players.number,
       numberOfPlayersBest: players.best,
       numberOfPlayersNotRecommended: players.no,
+      imageDefault: image,
     });
     if (game) {
       router.push(`../boardgames/${game.id}`);
