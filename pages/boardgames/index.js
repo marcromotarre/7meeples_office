@@ -89,6 +89,7 @@ export default function Boardgames() {
         expansionOf,
         image,
       } = data;
+
       const game_updated = await update_boardgame_bgg({
         id: parseInt(id),
         name,

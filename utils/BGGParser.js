@@ -30,12 +30,7 @@ export const BGGParser = (gameData) => {
         .map((expansion) => expansion["@attributes"].objectid);
     } else {
       return !expansions["@attributes"].inbound
-        ? [
-            {
-              id: expansions["@attributes"].objectid,
-              name: expansions["#text"],
-            },
-          ]
+        ? [expansions["@attributes"].objectid]
         : [];
     }
   };
@@ -51,12 +46,7 @@ export const BGGParser = (gameData) => {
         .map((expansion) => expansion["@attributes"].objectid);
     } else {
       return expansions["@attributes"].inbound
-        ? [
-            {
-              id: expansions["@attributes"].objectid,
-              name: expansions["#text"],
-            },
-          ]
+        ? [expansions["@attributes"].objectid]
         : [];
     }
   };
