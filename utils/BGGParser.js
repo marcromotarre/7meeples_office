@@ -70,6 +70,44 @@ export const BGGParser = (gameData) => {
     }
   };
 
+  const mechanisms = (mechanisms) => {
+    if (!mechanisms) {
+      return [];
+    }
+    if (Array.isArray(mechanisms)) {
+      return mechanisms.map((mechanism) => ({
+        id: mechanism["@attributes"].objectid,
+        name: mechanism["#text"],
+      }));
+    } else {
+      return [
+        {
+          id: mechanisms["@attributes"].objectid,
+          name: mechanisms["#text"],
+        },
+      ];
+    }
+  };
+
+  const designers = (designers) => {
+    if (!designers) {
+      return [];
+    }
+    if (Array.isArray(designers)) {
+      return designers.map((designer) => ({
+        id: designer["@attributes"].objectid,
+        name: designer["#text"],
+      }));
+    } else {
+      return [
+        {
+          id: designers["@attributes"].objectid,
+          name: designers["#text"],
+        },
+      ];
+    }
+  };
+
   console.log(gameData.boardgames.boardgame);
 
   const data = {
@@ -104,33 +142,9 @@ export const BGGParser = (gameData) => {
     image: gameData.boardgames.boardgame.image["#text"],
     expansions: expansions(gameData.boardgames.boardgame.boardgameexpansion),
     expansionOf: expansionOf(gameData.boardgames.boardgame.boardgameexpansion),
-    designers: Array.isArray(gameData.boardgames.boardgame.boardgamedesigner)
-      ? gameData.boardgames.boardgame.boardgamedesigner.map((designer) => ({
-          id: designer["@attributes"].objectid,
-          name: designer["#text"],
-        }))
-      : [
-          {
-            id:
-              gameData.boardgames.boardgame.boardgamedesigner["@attributes"]
-                .objectid,
-            name: gameData.boardgames.boardgame.boardgamedesigner["#text"],
-          },
-        ],
+    designers: designers(gameData.boardgames.boardgame.boardgamedesigner),
     categories: categories(gameData.boardgames.boardgame.boardgamecategory),
-    mechanisms: Array.isArray(gameData.boardgames.boardgame.boardgamemechanic)
-      ? gameData.boardgames.boardgame.boardgamemechanic.map((mechanism) => ({
-          id: mechanism["@attributes"].objectid,
-          name: mechanism["#text"],
-        }))
-      : [
-          {
-            id:
-              gameData.boardgames.boardgame.boardgamemechanic["@attributes"]
-                .objectid,
-            name: gameData.boardgames.boardgame.boardgamemechanic["#text"],
-          },
-        ],
+    mechanisms: mechanisms(gameData.boardgames.boardgame.boardgamemechanic),
     /*family: gameData.boardgames.boardgame.boardgamefamily.map((familyType) => ({
       id: familyType["@attributes"].objectid,
       name: familyType["#text"],

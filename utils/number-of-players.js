@@ -1,6 +1,20 @@
 import { isBest, isRecommended } from "./bgg";
 
 export const playersPoll = (gameData) => {
+  if (
+    gameData.boardgames.boardgame.poll.filter(
+      (elem) => elem["@attributes"].name === "suggested_numplayers"
+    )[0]["@attributes"].totalvotes === "0"
+  ) {
+    return {
+      min: 0,
+      max: 0,
+      best: [0],
+      recommended: [0],
+      no: [0],
+      number: [0],
+    };
+  }
   const playersInfo = gameData.boardgames.boardgame.poll
     .filter((elem) => elem["@attributes"].name === "suggested_numplayers")[0]
     .results.filter((elem) => !elem["@attributes"].numplayers.includes("+"))
