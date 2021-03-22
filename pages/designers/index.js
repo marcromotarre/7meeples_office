@@ -65,6 +65,9 @@ export default function Designers() {
 
   const classes = useStyles();
 
+  const clickOnCategory = (index) => {
+    console.log("category", index);
+  };
   return (
     <div className={styles.container}>
       <Head>
@@ -95,7 +98,7 @@ export default function Designers() {
             </TableHead>
             <TableBody>
               {rows.map((row, index) => (
-                <Link key={row.id}>
+                <Link key={row.id} href={`/categories/${rows[index].id}`}>
                   <StyledTableRow>
                     <StyledTableCell component="th" scope="row">
                       {row.id}
