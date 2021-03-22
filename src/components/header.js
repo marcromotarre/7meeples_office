@@ -37,15 +37,5 @@ export default function Header() {
     }
   };
 
-  return (
-    <div className="header">
-      {session && (
-        <>
-          <Button onClick={handleSignout} variant="outlined" color="primary">
-            Sign Out
-          </Button>
-        </>
-      )}
-    </div>
-  );
+  return <div className="header"></div>;
 }

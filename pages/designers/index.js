@@ -65,9 +65,6 @@ export default function Designers() {
 
   const classes = useStyles();
 
-  const clickOnCategory = (index) => {
-    console.log("category", index);
-  };
   return (
     <div className={styles.container}>
       <Head>
