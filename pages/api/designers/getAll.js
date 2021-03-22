@@ -7,6 +7,7 @@ export default async (req, res) => {
         designers {
             id
             name
+            description
           }
       }
     `,

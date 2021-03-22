@@ -1,5 +1,20 @@
 import axios from "axios";
 
+export const update_designer = async ({ id, name, description }) => {
+  return await axios
+    .post("/api/designers/update", {
+      id,
+      name,
+      description,
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+
 export const get_designers = async () => {
   return await axios
     .get("/api/designers/getAll")
