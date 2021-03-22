@@ -31,7 +31,9 @@ export default function Boardgames() {
     const boardgames = await get_boardgames();
     if (boardgames) {
       setRows(
-        boardgames.map(({ id, name, webname }) => createData(id, name, webname))
+        boardgames
+          .sort((a, b) => (a.id > b.id ? 1 : -1))
+          .map(({ id, name, webname }) => createData(id, name, webname))
       );
     }
   };
