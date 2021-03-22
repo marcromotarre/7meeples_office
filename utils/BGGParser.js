@@ -113,12 +113,24 @@ export const BGGParser = (gameData) => {
   const data = {
     id: gameData.boardgames.boardgame["@attributes"].objectid,
     name: name(gameData.boardgames.boardgame.name),
-    year: gameData.boardgames.boardgame.yearpublished["#text"],
-    age: gameData.boardgames.boardgame.age["#text"],
+    year:
+      gameData.boardgames.boardgame.yearpublished["#text"] === undefined
+        ? 0
+        : gameData.boardgames.boardgame.yearpublished["#text"],
+    age:
+      gameData.boardgames.boardgame.age["#text"] === undefined
+        ? 0
+        : gameData.boardgames.boardgame.age["#text"],
     players: playersPoll(gameData),
     playTime: {
-      min: gameData.boardgames.boardgame.minplaytime["#text"],
-      max: gameData.boardgames.boardgame.maxplaytime["#text"],
+      min:
+        gameData.boardgames.boardgame.minplaytime["#text"] === undefined
+          ? 0
+          : gameData.boardgames.boardgame.minplaytime["#text"],
+      max:
+        gameData.boardgames.boardgame.maxplaytime["#text"] === undefined
+          ? 0
+          : gameData.boardgames.boardgame.maxplaytime["#text"],
     },
     weight:
       gameData.boardgames.boardgame.statistics.ratings.averageweight["#text"],
