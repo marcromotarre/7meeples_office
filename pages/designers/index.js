@@ -98,8 +98,8 @@ export default function Designers() {
             </TableHead>
             <TableBody>
               {rows.map((row, index) => (
-                <Link key={row.id} href={`/categories/${rows[index].id}`}>
-                  <StyledTableRow onClick={() => clickOnDesigner(index)}>
+                <Link key={row.id}>
+                  <StyledTableRow>
                     <StyledTableCell component="th" scope="row">
                       {row.id}
                     </StyledTableCell>
