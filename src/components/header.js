@@ -10,9 +10,9 @@ export default function Header() {
   const router = useRouter();
   const [session] = useSession();
   console.log(session);
-  if (session === null) {
+  /*if (session === null) {
     router.push(`../login`);
-  }
+  }*/
   const handleSignout = (e) => {
     e.preventDefault();
     signOut();
