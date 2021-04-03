@@ -108,6 +108,25 @@ export const BGGParser = (gameData) => {
     }
   };
 
+  const families = (families) => {
+    if (!families) {
+      return [];
+    }
+    if (Array.isArray(families)) {
+      return families.map((family) => ({
+        id: family["@attributes"].objectid,
+        name: family["#text"],
+      }));
+    } else {
+      return [
+        {
+          id: families["@attributes"].objectid,
+          name: families["#text"],
+        },
+      ];
+    }
+  };
+
   console.log(gameData.boardgames.boardgame);
 
   const data = {
@@ -157,6 +176,7 @@ export const BGGParser = (gameData) => {
     designers: designers(gameData.boardgames.boardgame.boardgamedesigner),
     categories: categories(gameData.boardgames.boardgame.boardgamecategory),
     mechanisms: mechanisms(gameData.boardgames.boardgame.boardgamemechanic),
+    families: families(gameData.boardgames.boardgame.boardgamefamily),
     /*family: gameData.boardgames.boardgame.boardgamefamily.map((familyType) => ({
       id: familyType["@attributes"].objectid,
       name: familyType["#text"],

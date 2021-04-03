@@ -2,15 +2,15 @@ const { query } = require("./../../../utils/hasura");
 
 export default async (req, res) => {
   const { id } = req.body;
-  const category = await query({
+  const { families_by_pk } = await query({
     query: `
         query {
-            categories_by_pk(id: ${id}) {
-                id, name, webname, description, image
+            families_by_pk(id: ${id}) {
+                id, name, webname, description
             }
         }
     `,
   });
   res.statusCode = 200;
-  res.json(category.categories_by_pk);
+  res.json(families_by_pk);
 };

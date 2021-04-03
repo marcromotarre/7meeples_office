@@ -59,6 +59,7 @@ export const add_boardgame = async ({
   categories,
   mechanisms,
   designers,
+  families,
   playTimeMin,
   playTimeMax,
   numberOfPlayers,
@@ -91,6 +92,7 @@ export const add_boardgame = async ({
       numVotes,
       average,
       imageDefault,
+      families,
     })
     .then((response) => {
       console.log(response.data);
@@ -111,6 +113,7 @@ export const update_boardgame_bgg = async ({
   categories,
   mechanisms,
   designers,
+  families,
   playTimeMin,
   playTimeMax,
   numberOfPlayers,
@@ -133,6 +136,7 @@ export const update_boardgame_bgg = async ({
       categories,
       mechanisms,
       designers,
+      families,
       playTimeMin,
       playTimeMax,
       numberOfPlayers,

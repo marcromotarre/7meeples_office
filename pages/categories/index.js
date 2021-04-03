@@ -28,9 +28,11 @@ export default function Categories() {
     const categories = await get_categories();
     if (categories) {
       setRows(
-        categories.map(({ id, name, webname, description }) =>
-          createData(id, name, webname, description)
-        )
+        categories
+          .sort((a, b) => (a.id > b.id ? 1 : -1))
+          .map(({ id, name, webname, description, image }) =>
+            createData(id, name, webname, description, image)
+          )
       );
     }
   };
@@ -53,8 +55,8 @@ export default function Categories() {
     },
   }))(TableRow);
 
-  function createData(id, name, webname, description) {
-    return { id, name, webname, description };
+  function createData(id, name, webname, description, image) {
+    return { id, name, webname, description, image };
   }
 
   const useStyles = makeStyles({
@@ -95,6 +97,7 @@ export default function Categories() {
                 <StyledTableCell>Name</StyledTableCell>
                 <StyledTableCell>Webname</StyledTableCell>
                 <StyledTableCell>Description</StyledTableCell>
+                <StyledTableCell>Imagen</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -112,6 +115,9 @@ export default function Categories() {
                     </StyledTableCell>
                     <StyledTableCell component="th" scope="row">
                       {row.description}
+                    </StyledTableCell>
+                    <StyledTableCell component="th" scope="row">
+                      {row.image}
                     </StyledTableCell>
                   </StyledTableRow>
                 </Link>

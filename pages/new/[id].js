@@ -24,6 +24,7 @@ import { add_boardgame } from "../../src/api/boardgames";
 import { get_designers, add_designer } from "../../src/api/designers";
 import { get_categories, add_category } from "../../src/api/categories";
 import { get_mechanisms, add_mechanism } from "../../src/api/mechanisms";
+import { get_families, add_family } from "../../src/api/families";
 
 export default function New() {
   const [data, setData] = useState(null);
@@ -58,6 +59,7 @@ export default function New() {
       categories,
       designers,
       mechanisms,
+      families,
       expansions,
       expansionOf,
       image,
@@ -91,6 +93,14 @@ export default function New() {
       }
     });
 
+    const _families = await get_families();
+    families.forEach((family) => {
+      if (!_families.some(({ id }) => id === parseInt(family.id))) {
+        add_family({ id: family.id, name: family.name });
+        console.log(`family ${family.id} with name ${family.name} added `);
+      }
+    });
+
     const game = await add_boardgame({
       id: parseInt(id),
       name,
@@ -100,6 +110,7 @@ export default function New() {
       weight,
       categories: categories.map((category) => parseInt(category.id)),
       designers: designers.map((designer) => parseInt(designer.id)),
+      families: families.map((family) => parseInt(family.id)),
       playTimeMin: parseInt(playTime.min),
       playTimeMax: parseInt(playTime.max),
       expansions: expansions.map((expansion) => parseInt(expansion)),

@@ -3,7 +3,7 @@ import styles from "../../styles/Home.module.css";
 import Link from "next/link";
 
 import React, { useState, useEffect } from "react";
-import { get_categories } from "../../src/api/categories";
+import { get_categories, add_category } from "../../src/api/categories";
 
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -20,6 +20,9 @@ import { get_boardgames, update_boardgame_bgg } from "../../src/api/boardgames";
 import Header from "../../src/components/header";
 import { BGGParser, getGameFromApiBGG } from "../../utils/BGGParser";
 import xml2json from "../../utils/xml2json";
+import { get_mechanisms } from "../../src/api/mechanisms";
+import { get_families, add_family } from "../../src/api/families";
+import { add_designer, get_designers } from "../../src/api/designers";
 
 export default function Boardgames() {
   const [rows, setRows] = useState([]);
@@ -72,8 +75,18 @@ export default function Boardgames() {
     //get all games
     //for each update data
     const boardgames = await get_boardgames();
-
+    let index = 0;
     for (const boardgame of boardgames) {
+      loop_boardgame(boardgame, index, boardgames);
+      index = index + 1;
+      //create designers, mechanics, families, categories
+    }
+  };
+
+  async function loop_boardgame(boardgame, index, boardgames) {
+    let subIndex = 0;
+
+    setTimeout(async function () {
       const data = await getGameFromApiBGG(boardgame.id);
       const {
         id,
@@ -86,13 +99,57 @@ export default function Boardgames() {
         rating,
         categories,
         designers,
+        families,
         mechanisms,
         expansions,
         expansionOf,
         image,
       } = data;
 
-      const game_updated = await update_boardgame_bgg({
+      const _designers = await get_designers();
+      const _categories = await get_categories();
+      const _mechanisms = await get_mechanisms();
+      const _families = await get_families();
+
+      designers.forEach((designer) => {
+        if (!_designers.some(({ id }) => id === parseInt(designer.id))) {
+          add_designer({ id: designer.id, name: designer.name });
+          subIndex = subIndex + 1;
+          console.log(
+            `designer ${designer.id} with name ${designer.name} added `
+          );
+        }
+      });
+
+      categories.forEach((category) => {
+        if (!_categories.some(({ id }) => id === parseInt(category.id))) {
+          add_category({ id: category.id, name: category.name });
+          subIndex = subIndex + 1;
+          console.log(
+            `category ${category.id} with name ${category.name} added `
+          );
+        }
+      });
+
+      mechanisms.forEach((mechanism) => {
+        if (!_mechanisms.some(({ id }) => id === parseInt(mechanism.id))) {
+          add_mechanism({ id: mechanism.id, name: mechanism.name });
+          subIndex = subIndex + 1;
+          console.log(
+            `mechanism ${mechanism.id} with name ${mechanism.name} added `
+          );
+        }
+      });
+
+      families.forEach((family) => {
+        if (!_families.some(({ id }) => id === parseInt(family.id))) {
+          add_family({ id: family.id, name: family.name });
+          subIndex = subIndex + 1;
+          console.log(`family ${family.id} with name ${family.name} added `);
+        }
+      });
+
+      update_boardgame_bgg({
         id: parseInt(id),
         name,
         year,
@@ -112,8 +169,10 @@ export default function Boardgames() {
         numberOfPlayersNotRecommended: players.no,
         imageDefault: image,
       });
-    }
-  };
+
+      console.log(`boardgame ${index} of ${boardgames.length}`);
+    }, 6000 * index + 1000 * subIndex);
+  }
 
   return (
     <div className={styles.container}>

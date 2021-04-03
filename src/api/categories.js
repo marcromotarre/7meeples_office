@@ -24,13 +24,21 @@ export const get_category = async ({ id }) => {
     });
 };
 
-export const update_category = async ({ id, name, webname, description }) => {
+export const update_category = async ({
+  id,
+  name,
+  webname,
+  description,
+  image,
+}) => {
+  debugger;
   return await axios
     .post("/api/categories/update", {
       id,
       name,
       webname,
       description,
+      image,
     })
     .then((response) => {
       return response.data;

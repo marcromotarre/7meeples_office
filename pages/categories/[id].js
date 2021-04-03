@@ -48,6 +48,7 @@ export default function Category() {
   const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [image, setImage] = useState("");
   const router = useRouter();
   useEffect(() => {
     if (router.query.id) {
@@ -60,6 +61,8 @@ export default function Category() {
     setCategory(category);
     setWebname(category.webname);
     setName(category.name);
+    setDescription(category.description);
+    setImage(category.image);
   };
 
   const webnameChange = (event) => {
@@ -68,10 +71,18 @@ export default function Category() {
   const descriptionChange = (event) => {
     setDescription(event.target.value);
   };
+  const imageChange = (event) => {
+    setImage(event.target.value);
+  };
 
   const onSave = async () => {
-    console.log("saved");
-    const category = await update_category({ id, name, webname, description });
+    const category = await update_category({
+      id,
+      name,
+      webname,
+      description,
+      image,
+    });
     setSnackbarOpen(true);
   };
 
@@ -161,6 +172,20 @@ export default function Category() {
             shrink: true,
           }}
           value={description}
+          variant="filled"
+        />
+
+        <TextField
+          label="imagen"
+          style={{ margin: 8 }}
+          onChange={imageChange}
+          placeholder={image ? image : "Añade una imagen"}
+          fullWidth
+          margin="normal"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          value={image}
           variant="filled"
         />
 
