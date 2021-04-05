@@ -85,7 +85,6 @@ export default function Boardgames() {
 
   async function loop_boardgame(boardgame, index, boardgames) {
     let subIndex = 0;
-
     setTimeout(async function () {
       const data = await getGameFromApiBGG(boardgame.id);
       const {
@@ -105,7 +104,6 @@ export default function Boardgames() {
         expansionOf,
         image,
       } = data;
-
       const _designers = await get_designers();
       const _categories = await get_categories();
       const _mechanisms = await get_mechanisms();
@@ -168,6 +166,7 @@ export default function Boardgames() {
         numberOfPlayersBest: players.best,
         numberOfPlayersNotRecommended: players.no,
         imageDefault: image,
+        families: families.map((family) => parseInt(family.id)),
       });
 
       console.log(`boardgame ${index} of ${boardgames.length}`);
