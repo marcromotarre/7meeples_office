@@ -27,6 +27,7 @@ export default async (req, res) => {
     PVP = 0,
     price = 0,
     imageDefault = "",
+    publishers = [],
   } = req.body;
 
   const queryString = `
@@ -46,6 +47,7 @@ mutation MyMutation {
         description: "", 
         designers: [${designers}], 
         families: [${families}], 
+        publishers: [${publishers}], 
         expansions: [${expansions}], 
         expansionOf: [${expansionOf}], 
         stock: ${stock}, 

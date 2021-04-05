@@ -11,6 +11,10 @@ import IconButton from "@material-ui/core/IconButton";
 import SaveIcon from "@material-ui/icons/Save";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import Snackbar from "@material-ui/core/Snackbar";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import InputLabel from "@material-ui/core/InputLabel";
+
 import { makeStyles } from "@material-ui/core/styles";
 import MuiAlert from "@material-ui/lab/Alert";
 import { useSession } from "next-auth/client";
@@ -56,6 +60,7 @@ export default function Boardgame() {
   const [stock, setStock] = useState(0);
   const [webname, setWebname] = useState("");
   const [active, setActive] = useState(false);
+  const [publishers, setPublishers] = useState([]);
   const [description, setDescription] = useState("");
   useEffect(() => {
     if (router.query.id) {
@@ -104,6 +109,15 @@ export default function Boardgame() {
       stock: parseInt(stock),
     });
     //setSnackbarOpen(true);
+  };
+
+  const changePublisher = (event, index) => {
+    let new_publishers = [...publishers];
+    new_publishers[index] = event.target.value;
+    setPublishers([...new_publishers]);
+  };
+  const addPublisher = (event) => {
+    setPublishers([...publishers, event.target.value]);
   };
 
   const classes = useStyles();
@@ -209,6 +223,31 @@ export default function Boardgame() {
               value={PVP}
               variant="filled"
             />
+
+            <InputLabel id="demo-simple-select-label">Editoriales</InputLabel>
+            {publishers.map((publisher, index) => (
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={publisher}
+                onChange={(value) => changePublisher(value, index)}
+              >
+                <MenuItem value={"Devir"}>Devir</MenuItem>
+                <MenuItem value={"Maldito Games"}>Maldito</MenuItem>
+                <MenuItem value={"Tranjis Games"}>Tranjis</MenuItem>
+              </Select>
+            ))}
+
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={"hola"}
+              onChange={(value) => addPublisher(value)}
+            >
+              <MenuItem value={"Devir"}>Devir</MenuItem>
+              <MenuItem value={"Maldito Games"}>Maldito</MenuItem>
+              <MenuItem value={"Tranjis Games"}>Tranjis</MenuItem>
+            </Select>
 
             <IconButton
               color="primary"

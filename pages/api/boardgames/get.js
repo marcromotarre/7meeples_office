@@ -30,6 +30,7 @@ export default async (req, res) => {
           price
           stock
           active
+          publishers
         }
       }
     `,
