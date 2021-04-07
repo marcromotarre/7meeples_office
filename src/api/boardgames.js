@@ -31,6 +31,7 @@ export const update_boardgame = async ({
   stock,
   price,
   active,
+  publishers,
 }) => {
   return await axios
     .post("/api/boardgames/update", {
@@ -40,6 +41,7 @@ export const update_boardgame = async ({
       stock,
       price,
       active,
+      publishers,
     })
     .then((response) => {
       return response.data;
