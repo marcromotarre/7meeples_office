@@ -7,6 +7,7 @@ export default async (req, res) => {
         publishers {
             id
             name
+            image
           }
       }
     `,
