@@ -10,3 +10,14 @@ export const get_publishers = async () => {
       console.log(error);
     });
 };
+
+export const add_publisher = async ({ id, name, description, image }) => {
+  return await axios
+    .post("/api/publishers/add", { id, name, description, image })
+    .then((response) => {
+      return response.data;
+    })
+    .catch(function (error) {
+      return { error: error };
+    });
+};
