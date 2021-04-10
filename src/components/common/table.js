@@ -3,19 +3,23 @@
 import { jsx } from "theme-ui";
 import React, { useState, useRef, useEffect } from "react";
 
-export default function Table({ columns, data, styles }) {
-  const transformed_data = data.map((d) =>
-    columns.map((column) => (d[column.field] ? d[column.field] : ""))
-  );
+export default function Table({ columns, data, onClick = () => {}, styles }) {
+  const transformed_data = data.map((d) => {
+    return {
+      id: d.id,
+      data: columns.map((column) => (d[column.field] ? d[column.field] : "")),
+    };
+  });
 
   const columnsWidth = columns
     .map(({ width }) => (width ? width : "auto"))
     .reduce((arr, acc) => arr + " " + acc);
-  console.log("columnsWidth", columnsWidth);
   const rowColors =
     transformed_data.length % 2 === 0
       ? ["#FFFFFF", "#EEEEEE"]
       : ["#EEEEEE", "#FFFFFF"];
+
+  console.log(transformed_data);
   return (
     <div
       sx={{
@@ -46,8 +50,9 @@ export default function Table({ columns, data, styles }) {
       ))}
       {transformed_data.map((row, index) => (
         <>
-          {row.map((field) => (
+          {row.data.map((field) => (
             <div
+              onClick={() => onClick(row.id)}
               sx={{
                 display: "flex",
                 justifyContent: "center",

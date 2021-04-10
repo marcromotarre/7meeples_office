@@ -8,35 +8,46 @@ import { get_categories, add_category } from "../../src/api/categories";
 
 import Table from "../../src/components/common/table";
 import Button from "../../src/components/common/button";
+import Checkbox from "../../src/components/common/checkbox";
 
-import { get_publishers } from "../../src/api/publishers";
+import { get_families } from "../../src/api/families";
 import { useRouter } from "next/router";
 
-export default function publishers() {
+export default function families() {
   const router = useRouter();
-  const [allPublishers, setAllPublishers] = useState([]);
+  const [allFamilies, setAllFamilies] = useState([]);
+  const [onlyGames, setOnlyGames] = useState(false);
   useEffect(() => {
-    getPublishers();
+    getFamilies();
   }, []);
-  let getPublishers = async (id) => {
-    const publishers = await get_publishers();
-    setAllPublishers(publishers);
+  let getFamilies = async (id) => {
+    const families = await get_families();
+    setAllFamilies(families);
   };
 
   const columns = [
     { name: "ID", field: "id", width: "min-content" },
     { name: "Nombre", field: "name", width: "auto" },
+    { name: "Type", field: "type" },
     { name: "Imagen", field: "image" },
     { name: "Color", field: "color" },
   ];
 
-  const goToPublisherCreation = () => {
-    router.push(`/publishers/add`);
+  const goToFamilyCreation = () => {
+    router.push(`/families/add`);
   };
 
-  const goToPublisherEdit = (id) => {
-    router.push(`/publishers/${id}`);
+  const goToFamilyEdit = (id) => {
+    router.push(`/families/${id}`);
   };
+
+  const onlyGameChange = (checked) => {
+    setOnlyGames(checked);
+  };
+
+  const filteredFamilies = onlyGames
+    ? allFamilies.filter((family) => family.name.startsWith("Game:"))
+    : allFamilies;
 
   return (
     <div
@@ -49,15 +60,20 @@ export default function publishers() {
       }}
     >
       <div sx={{ height: "30px", width: "100%" }}></div>
-      <Button onClick={goToPublisherCreation}>
+      <Button onClick={goToFamilyCreation}>
         <h3>Añadir Editorial</h3>
       </Button>
       <div sx={{ height: "30px", width: "100%" }}></div>
+      <Checkbox
+        text={"Solo Juegos"}
+        defaultValue={onlyGames}
+        onChange={onlyGameChange}
+      />
       <Table
         styles={{ width: "80%" }}
         columns={columns}
-        data={allPublishers}
-        onClick={(id) => goToPublisherEdit(id)}
+        data={filteredFamilies}
+        onClick={(id) => goToFamilyEdit(id)}
       ></Table>
       <div sx={{ height: "30px", width: "100%" }}></div>
     </div>

@@ -47,7 +47,7 @@ export const update_boardgame = async ({
       return response.data;
     })
     .catch(function (error) {
-      console.log(error);
+      return { error };
     });
 };
 

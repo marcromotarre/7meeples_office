@@ -1,18 +1,29 @@
 import axios from "axios";
 
-export const update_family = async ({ id, webname, name, description }) => {
+export const update_family = async ({
+  id,
+  webname,
+  name,
+  description,
+  color,
+  type,
+  image,
+}) => {
   return await axios
     .post("/api/families/update", {
       id,
       name,
       description,
       webname,
+      color,
+      type,
+      image,
     })
     .then((response) => {
       return response.data;
     })
     .catch(function (error) {
-      console.log(error);
+      return { error };
     });
 };
 

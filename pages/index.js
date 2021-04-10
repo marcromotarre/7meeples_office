@@ -45,6 +45,10 @@ export default function Home() {
   const goToPublishers = () => {
     router.push(`/publishers`);
   };
+
+  const goToFamilies = () => {
+    router.push(`/families`);
+  };
   return (
     <div className={styles.container}>
       <Header></Header>
@@ -75,6 +79,9 @@ export default function Home() {
         </Button>
         <Button sx={{ width: "fit-content" }} onClick={goToPublishers}>
           <h1>Editoriales</h1>
+        </Button>
+        <Button sx={{ width: "fit-content" }} onClick={goToFamilies}>
+          <h1>Familias</h1>
         </Button>
       </div>
     </div>

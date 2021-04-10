@@ -3,20 +3,27 @@
 import { jsx } from "theme-ui";
 import React, { useState, useRef, useEffect } from "react";
 
-const TYPES = {
-  OK: "OK",
+export const TYPES = {
+  SUCCESS: "SUCCESS",
   ERROR: "ERROR",
   WARNING: "WARNING",
   INFO: "INFO",
 };
 
 const COLORS = {
-  OK: "#47D292",
+  SUCCESS: "#47D292",
   ERROR: "#FD4850",
   WARNING: "#F9C821",
   INFO: "#0080F5",
 };
-export default function Toast({ id, type, message, onClose = () => {}, time }) {
+export default function Toast({
+  id,
+  type,
+  message,
+  onClose = () => {},
+  time,
+  styles,
+}) {
   useEffect(() => {
     if (time) {
       const timer = setTimeout(() => {
@@ -37,6 +44,7 @@ export default function Toast({ id, type, message, onClose = () => {}, time }) {
         borderRadius: "8px",
         boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
         background: COLORS[type],
+        ...styles,
       }}
     >
       <p

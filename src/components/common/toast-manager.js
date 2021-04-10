@@ -8,6 +8,7 @@ import Document, { Html, Head, Main, NextScript } from "next/document";
 
 import Toast from "./toast";
 import { useToast } from "./toast-provider";
+
 const ToastContainer = ({ toasts }) => {
   const { removeToast } = useToast();
   const transitions = useTransition(toasts, (toast) => toast.id, {
@@ -25,15 +26,19 @@ const ToastContainer = ({ toasts }) => {
       sx={{
         position: "absolute",
         display: "grid",
+        width: "100%",
         gridTemplateColumns: "100%",
+        justifyItems: "center",
+        alignItems: "center",
         rowGap: "10px",
         zIndex: "1",
       }}
     >
+      <div sx={{ height: "10px" }}></div>
       {toasts.map((toast) => (
         <Toast
           key={toast.id}
-          type={"OK"}
+          type={toast.type}
           id={toast.id}
           message={toast.message}
           onClose={closeToast}

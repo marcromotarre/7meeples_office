@@ -3,7 +3,7 @@
 import { jsx } from "theme-ui";
 import { useState, useRef, useEffect } from "react";
 
-export default function Input({
+export default function Field({
   styles = {},
   defaultValue = "",
   text,

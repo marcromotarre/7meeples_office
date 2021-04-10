@@ -6,7 +6,7 @@ export default async (req, res) => {
     query: `
         query {
             families_by_pk(id: ${id}) {
-                id, name, webname, description
+                id, name, webname, description,type,color,full
             }
         }
     `,

@@ -10,9 +10,13 @@ import { get_publishers } from "../../src/api/publishers";
 import save_icon from "../../src/assets/save-icon.svg";
 import { useRouter } from "next/router";
 import { get_boardgame, update_boardgame } from "../../src/api/boardgames";
-
+import ToastProvider, {
+  useToast,
+} from "../../src/components/common/toast-provider";
+import { TYPES } from "../../src/components/common/toast";
 export default function Boardgame() {
   const router = useRouter();
+  const { addToast } = useToast();
 
   const [allPublishers, setAllPublishers] = useState([]);
 
@@ -50,7 +54,7 @@ export default function Boardgame() {
     }
   };
   const onSave = async () => {
-    const b = await update_boardgame({
+    const { error } = await update_boardgame({
       id: boardgame.id,
       webname,
       price: parseFloat(price),
@@ -59,6 +63,21 @@ export default function Boardgame() {
       stock: parseInt(stock),
       publishers,
     });
+
+    if (error) {
+      addToast({
+        type: TYPES.ERROR,
+        message: "No se ha podido guardar editoriar",
+        time: "4000",
+      });
+    } else {
+      addToast({
+        type: TYPES.SUCCESS,
+        message: "Editorial Guardada Correctamente",
+        time: "4000",
+      });
+      router.push(`/boardgames/`);
+    }
   };
   return (
     <div

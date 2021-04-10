@@ -1,7 +1,7 @@
 const { query } = require("./../../../utils/hasura");
 
 export default async (req, res) => {
-  const { id, name = "", description = "", image = "" } = req.body;
+  const { id, name = "", description = "", image = "", color = "" } = req.body;
 
   const queryString = `
     mutation MyMutation {
@@ -9,12 +9,14 @@ export default async (req, res) => {
             name: "${name}",
             id: ${id}, 
             description: "${description}", 
-            image: "${image}", 
+            image: "${image}",
+            color: "${color}"
         }) {
             id,
             name,
             image,
             description 
+            color
         }
     }
 `;
