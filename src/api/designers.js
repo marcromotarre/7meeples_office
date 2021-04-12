@@ -5,7 +5,7 @@ export const update_designer = async ({ id, name, description }) => {
     .post("/api/designers/update", {
       id,
       name,
-      description,
+      description: description.replaceAll(`"`, `\\"`),
     })
     .then((response) => {
       return response.data;
