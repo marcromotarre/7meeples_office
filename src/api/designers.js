@@ -1,17 +1,18 @@
 import axios from "axios";
 
-export const update_designer = async ({ id, name, description }) => {
+export const update_designer = async ({ id, name, description, image }) => {
   return await axios
     .post("/api/designers/update", {
       id,
       name,
+      image,
       description: description.replaceAll(`"`, `\\"`),
     })
     .then((response) => {
       return response.data;
     })
     .catch(function (error) {
-      console.log(error);
+      return error;
     });
 };
 

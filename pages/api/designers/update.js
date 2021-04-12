@@ -1,10 +1,10 @@
 const { query } = require("../../../utils/hasura");
 
 export default async (req, res) => {
-  const { id, name, description } = req.body;
+  const { id, name, description, image } = req.body;
   const update_query = `
     mutation {
-      update_designers_by_pk(pk_columns: {id: ${id}}, _set: {description: "${description}", name: "${name}"}) {
+      update_designers_by_pk(pk_columns: {id: ${id}}, _set: {description: "${description}", name: "${name}", image: "${image}"}) {
         description
         id
         name

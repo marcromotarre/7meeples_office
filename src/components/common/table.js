@@ -19,7 +19,6 @@ export default function Table({ columns, data, onClick = () => {}, styles }) {
       ? ["#FFFFFF", "#EEEEEE"]
       : ["#EEEEEE", "#FFFFFF"];
 
-  console.log(transformed_data);
   return (
     <div
       sx={{

@@ -5,16 +5,12 @@ import React, { useState, useEffect } from "react";
 import Input from "../../src/components/common/input";
 import InputTextArea from "../../src/components/common/input-text-area";
 import Field from "../../src/components/common/field";
-import ToastManager from "../../src/components/common/toast-manager";
-import Select from "../../src/components/common/multiple-select";
 import { get_family, update_family } from "../../src/api/families";
 
 import save_icon from "../../src/assets/save-icon.svg";
 import { useRouter } from "next/router";
-import { get_boardgame, update_boardgame } from "../../src/api/boardgames";
-import ToastProvider, {
-  useToast,
-} from "../../src/components/common/toast-provider";
+import { update_boardgame } from "../../src/api/boardgames";
+import { useToast } from "../../src/components/common/toast-provider";
 import { TYPES } from "../../src/components/common/toast";
 
 export default function FamilyCreation() {
@@ -85,67 +81,65 @@ export default function FamilyCreation() {
   };
 
   return (
-    <ToastProvider>
+    <div
+      sx={{
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+      }}
+    >
+      <div sx={{ width: "100%", height: "50px" }}></div>
       <div
         sx={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "center",
+          width: "80%",
+          display: "grid",
+          gridTemplateColumns: "100%",
+          justifyItems: "flex-start",
           alignItems: "center",
-          flexDirection: "column",
+          rowGap: "20px",
         }}
       >
-        <div sx={{ width: "100%", height: "50px" }}></div>
-        <div
+        <h3 sx={{ justifySelf: "center" }}>Editar Familia</h3>
+        <Field text={"Id"} defaultValue={id}></Field>
+        <Field text={"Nombre"} defaultValue={name}></Field>
+        <Input
+          onChange={(value) => setWebname(value)}
+          text={"Webname"}
+          defaultValue={webname}
+        ></Input>
+        <Input
+          onChange={(value) => setImage(value)}
+          text={"Imagen"}
+          defaultValue={image}
+        ></Input>
+        <Input
+          onChange={(value) => setColor(value)}
+          text={"Color"}
+          defaultValue={color}
+        ></Input>
+        <Input
+          onChange={(value) => setType(value)}
+          text={"Tipo"}
+          defaultValue={type}
+        ></Input>
+        <InputTextArea
+          onChange={(value) => setDescription(value)}
+          text={"Descripcion"}
+          defaultValue={description}
+        ></InputTextArea>
+        <img
+          onClick={saveFamily}
           sx={{
-            width: "80%",
-            display: "grid",
-            gridTemplateColumns: "100%",
-            justifyItems: "flex-start",
-            alignItems: "center",
-            rowGap: "20px",
+            width: "25px",
+            height: "auto",
+            alignSelf: "center",
+            justifySelf: "center",
           }}
-        >
-          <h3 sx={{ justifySelf: "center" }}>Editar Familia</h3>
-          <Field text={"Id"} defaultValue={id}></Field>
-          <Field text={"Nombre"} defaultValue={name}></Field>
-          <Input
-            onChange={(value) => setWebname(value)}
-            text={"Webname"}
-            defaultValue={webname}
-          ></Input>
-          <Input
-            onChange={(value) => setImage(value)}
-            text={"Imagen"}
-            defaultValue={image}
-          ></Input>
-          <Input
-            onChange={(value) => setColor(value)}
-            text={"Color"}
-            defaultValue={color}
-          ></Input>
-          <Input
-            onChange={(value) => setType(value)}
-            text={"Tipo"}
-            defaultValue={type}
-          ></Input>
-          <InputTextArea
-            onChange={(value) => setDescription(value)}
-            text={"Descripcion"}
-            defaultValue={description}
-          ></InputTextArea>
-          <img
-            onClick={saveFamily}
-            sx={{
-              width: "25px",
-              height: "auto",
-              alignSelf: "center",
-              justifySelf: "center",
-            }}
-            src={save_icon}
-          ></img>
-        </div>
+          src={save_icon}
+        ></img>
       </div>
-    </ToastProvider>
+    </div>
   );
 }

@@ -6,7 +6,7 @@ export default async (req, res) => {
     query: `
         query {
             designers_by_pk(id: ${id}) {
-                id, name, description
+                id, name, image, description
             }
         }
     `,

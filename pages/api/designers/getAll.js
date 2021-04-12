@@ -8,6 +8,7 @@ export default async (req, res) => {
             id
             name
             description
+            image
           }
       }
     `,

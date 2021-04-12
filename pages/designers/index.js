@@ -7,8 +7,10 @@ import { get_designers } from "../../src/api/designers";
 import Table from "../../src/components/common/table";
 
 import Header from "../../src/components/header";
+import { useRouter } from "next/router";
 
 export default function Designers() {
+  const router = useRouter();
   const [designers, setDesigners] = useState([]);
   useEffect(() => {
     getDesigners();
@@ -35,7 +37,9 @@ export default function Designers() {
     { name: "Description", field: "description" },
   ];
 
-  const goToDesignerEdit = (index) => {};
+  const goToDesignerEdit = (id) => {
+    router.push(`/designers/${id}`);
+  };
   return (
     <div
       sx={{
