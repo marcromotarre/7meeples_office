@@ -12,28 +12,26 @@ export const getGameFromApiBGG = async (id) => {
   return BGGParser(xml2json(xmlDocument));
 };
 
-function makeHttpObject() {
-  try {
-    return new XMLHttpRequest();
-  } catch (error) {}
-  try {
-    return new ActiveXObject("Msxml2.XMLHTTP");
-  } catch (error) {}
-  try {
-    return new ActiveXObject("Microsoft.XMLHTTP");
-  } catch (error) {}
-
-  throw new Error("Could not create HTTP request object.");
-}
-
 const getSpanishVersionId = async (gameData) => {
-  const spanish = gameData.boardgames.boardgame.boardgameversion?.find(
-    (version) => version["#text"] === "Spanish edition"
-  );
-  if (spanish) {
-    const spanish_id = spanish["@attributes"].objectid;
+  let version = null;
+  const versions = gameData.boardgames.boardgame.boardgameversion;
+  if (!versions) {
+    return { spanish_name: "" };
+  }
+  if (Array.isArray(versions)) {
+    version = versions.find(
+      (version) => version["#text"] === "Spanish edition"
+    );
+  } else {
+    if (versions["#text"] === "Spanish edition") {
+      version = versions;
+    }
+  }
+
+  if (version) {
+    const spanish_id = version["@attributes"].objectid;
     var request = await axios(
-      `https://boardgamegeek.com/boardgameversion/513648/spanish-edition`
+      `https://boardgamegeek.com/boardgameversion/${spanish_id}/spanish-edition`
     );
     const spanish_name = request.data
       .split("<title>")[1]
@@ -43,11 +41,12 @@ const getSpanishVersionId = async (gameData) => {
       spanish_name,
     };
   } else {
-    return { error: "no spanish data" };
+    return { spanish_name: "" };
   }
 };
 
 export const BGGParser = async (gameData) => {
+  console.log(gameData.boardgames.boardgame);
   const name = (name) => {
     if (Array.isArray(name)) {
       return name[0]["#text"];

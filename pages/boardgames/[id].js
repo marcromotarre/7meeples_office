@@ -10,9 +10,7 @@ import { get_publishers } from "../../src/api/publishers";
 import save_icon from "../../src/assets/save-icon.svg";
 import { useRouter } from "next/router";
 import { get_boardgame, update_boardgame } from "../../src/api/boardgames";
-import ToastProvider, {
-  useToast,
-} from "../../src/components/common/toast-provider";
+import { useToast } from "../../src/components/common/toast-provider";
 import { TYPES } from "../../src/components/common/toast";
 export default function Boardgame() {
   const router = useRouter();

@@ -14,11 +14,14 @@ import Input from "../../src/components/common/input";
 import Field from "../../src/components/common/field";
 import Select from "../../src/components/common/multiple-select";
 import save_icon from "../../src/assets/save-icon.svg";
+import { useToast } from "../../src/components/common/toast-provider";
+import { TYPES } from "../../src/components/common/toast";
 
 export default function New() {
+  const router = useRouter();
+  const { addToast } = useToast();
   const [data, setData] = useState(null);
   const [webname, setWebname] = useState("");
-  const router = useRouter();
   const [allPublishers, setAllPublishers] = useState([]);
   const [publishers, setPublishers] = useState([]);
 
@@ -46,6 +49,7 @@ export default function New() {
 
   const setDataFromBBG = async (id) => {
     const _data = await getGameFromApiBGG(id);
+    setWebname(_data.spanish_name);
     setData(_data);
   };
 
@@ -103,7 +107,7 @@ export default function New() {
       }
     });
 
-    const game = await add_boardgame({
+    const { error } = await add_boardgame({
       id: parseInt(id),
       name,
       year,
@@ -126,8 +130,20 @@ export default function New() {
       numberOfPlayersNotRecommended: players.no,
       imageDefault: image,
     });
-    if (game) {
-      router.push(`../boardgames/${game.id}`);
+
+    if (error) {
+      addToast({
+        type: TYPES.ERROR,
+        message: "No se ha podido crear el juego",
+        time: "4000",
+      });
+    } else {
+      addToast({
+        type: TYPES.SUCCESS,
+        message: "Juego creado correctamente",
+        time: "4000",
+      });
+      router.push(`/new/`);
     }
   };
 
@@ -156,7 +172,7 @@ export default function New() {
         <Input
           onChange={(value) => setWebname(value)}
           text={"Name"}
-          defaultValue={data?.spanish_name}
+          defaultValue={webname}
         ></Input>
         {allPublishers.length > 0 && (
           <Select

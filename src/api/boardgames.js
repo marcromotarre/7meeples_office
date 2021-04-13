@@ -103,7 +103,7 @@ export const add_boardgame = async ({
       return response.data;
     })
     .catch(function (error) {
-      console.log(error);
+      return { error };
     });
 };
 
@@ -156,6 +156,6 @@ export const update_boardgame_bgg = async ({
       return response.data;
     })
     .catch(function (error) {
-      console.log(error);
+      return { error };
     });
 };
