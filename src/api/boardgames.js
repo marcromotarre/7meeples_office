@@ -72,6 +72,7 @@ export const add_boardgame = async ({
   numVotes,
   average,
   imageDefault,
+  publishers,
 }) => {
   return await axios
     .post("/api/boardgames/add", {
@@ -95,6 +96,7 @@ export const add_boardgame = async ({
       average,
       imageDefault,
       families,
+      publishers,
     })
     .then((response) => {
       console.log(response.data);

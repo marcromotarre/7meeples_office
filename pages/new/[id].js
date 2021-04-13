@@ -1,48 +1,51 @@
-import Head from "next/head";
-
+/** @jsxRuntime classic /
+/* @jsx jsx */
+import { jsx } from "theme-ui";
 import React, { useState, useEffect } from "react";
-import { BGGParser, getGameFromApiBGG } from "../../utils/BGGParser";
+import { getGameFromApiBGG } from "../../utils/BGGParser";
 import { useRouter } from "next/router";
-import xml2json from "../../utils/xml2json";
-import BoardGameManagerDetails from "../../src/components/boardgame-details";
-
-import styles from "../../styles/Home.module.css";
-import Link from "next/link";
-
-import TextField from "@material-ui/core/TextField";
-import IconButton from "@material-ui/core/IconButton";
-import SaveIcon from "@material-ui/icons/Save";
-import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
-import Snackbar from "@material-ui/core/Snackbar";
-import { makeStyles } from "@material-ui/core/styles";
-import MuiAlert from "@material-ui/lab/Alert";
-import Button from "@material-ui/core/Button";
-import SearchIcon from "@material-ui/icons/Search";
-
-import { List, ListSubheader, ListItem, ListItemText } from "@material-ui/core";
-import { add_boardgame } from "../../src/api/boardgames";
+import { add_boardgame, get_boardgame } from "../../src/api/boardgames";
 import { get_designers, add_designer } from "../../src/api/designers";
 import { get_categories, add_category } from "../../src/api/categories";
 import { get_mechanisms, add_mechanism } from "../../src/api/mechanisms";
+import { get_publishers } from "../../src/api/publishers";
 import { get_families, add_family } from "../../src/api/families";
+import Input from "../../src/components/common/input";
+import Field from "../../src/components/common/field";
+import Select from "../../src/components/common/multiple-select";
+import save_icon from "../../src/assets/save-icon.svg";
 
 export default function New() {
   const [data, setData] = useState(null);
-  const [webname, setWebName] = useState("");
+  const [webname, setWebname] = useState("");
   const router = useRouter();
+  const [allPublishers, setAllPublishers] = useState([]);
+  const [publishers, setPublishers] = useState([]);
 
   useEffect(() => {
-    if (router.query.id) {
-      setDataFromBBG();
+    if (router?.query?.id) {
+      getData(router.query.id);
     }
   }, [router.query.id]);
 
-  const webnameChange = (event) => {
-    setWebName(event.target.value);
+  const getData = async (id) => {
+    const boardgame = await get_boardgame({ id });
+    if (boardgame) {
+      router.push(`/boardgames/${id}`);
+    } else {
+      getPublishers();
+
+      setDataFromBBG(id);
+    }
   };
 
-  const setDataFromBBG = async () => {
-    const _data = await getGameFromApiBGG(router.query.id);
+  let getPublishers = async (id) => {
+    const publishers = await get_publishers();
+    setAllPublishers(publishers);
+  };
+
+  const setDataFromBBG = async (id) => {
+    const _data = await getGameFromApiBGG(id);
     setData(_data);
   };
 
@@ -64,7 +67,6 @@ export default function New() {
       expansionOf,
       image,
     } = data;
-    console.log(data);
     const _designers = await get_designers();
     designers.forEach((designer) => {
       if (!_designers.some(({ id }) => id === parseInt(designer.id))) {
@@ -107,6 +109,7 @@ export default function New() {
       year,
       webname,
       age,
+      publishers,
       weight,
       categories: categories.map((category) => parseInt(category.id)),
       designers: designers.map((designer) => parseInt(designer.id)),
@@ -129,110 +132,51 @@ export default function New() {
   };
 
   return (
-    <div>
-      <Head>
-        <title>Nuevo Juego de mesa</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      {data && (
-        <main>
-          <div>
-            <IconButton
-              color="primary"
-              aria-label="upload picture"
-              component="span"
-            >
-              <Link href={`/new/`}>
-                <ArrowBackIosIcon />
-              </Link>
-            </IconButton>
-            <TextField
-              label="id"
-              style={{ margin: 8 }}
-              fullWidth
-              margin="normal"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              value={data.id}
-              variant="filled"
-            />
-            <TextField
-              label="name"
-              style={{ margin: 8 }}
-              fullWidth
-              margin="normal"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              value={data.name}
-              variant="filled"
-            />
-            <TextField
-              label="webname"
-              style={{ margin: 8 }}
-              fullWidth
-              margin="normal"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              placeholder={
-                "Escribe aqui el nombre que quieres que se vea en la web"
-              }
-              onChange={webnameChange}
-              value={webname}
-              variant="filled"
-            />
-            <List>
-              <li key={`designers`}>
-                <ul>
-                  <ListSubheader>{`designers`}</ListSubheader>
-                  {data.designers.map((designer) => (
-                    <ListItem key={`${designer.id}`}>
-                      <ListItemText primary={`${designer.id}`} />
-                      <ListItemText primary={`${designer.name}`} />
-                    </ListItem>
-                  ))}
-                </ul>
-              </li>
-            </List>
-            <List>
-              <li key={`categories`}>
-                <ul>
-                  <ListSubheader>{`categories`}</ListSubheader>
-                  {data.categories.map((category) => (
-                    <ListItem key={`${category.id}`}>
-                      <ListItemText primary={`${category.id}`} />
-                      <ListItemText primary={`${category.name}`} />
-                    </ListItem>
-                  ))}
-                </ul>
-              </li>
-            </List>
-            <List>
-              <li key={`mechanisms`}>
-                <ul>
-                  <ListSubheader>{`mechanisms`}</ListSubheader>
-                  {data.mechanisms.map((mechanism) => (
-                    <ListItem key={`${mechanism.id}`}>
-                      <ListItemText primary={`${mechanism.id}`} />
-                      <ListItemText primary={`${mechanism.name}`} />
-                    </ListItem>
-                  ))}
-                </ul>
-              </li>
-            </List>
-            <IconButton
-              color="primary"
-              aria-label="upload picture"
-              component="span"
-              onClick={onSave}
-            >
-              <SaveIcon />
-            </IconButton>
-          </div>
-        </main>
-      )}
+    <div
+      sx={{
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+      }}
+    >
+      <div sx={{ width: "100%", height: "50px" }}></div>
+      <div
+        sx={{
+          width: "80%",
+          display: "grid",
+          gridTemplateColumns: "100%",
+          justifyItems: "flex-start",
+          alignItems: "center",
+          rowGap: "20px",
+        }}
+      >
+        <Field text={"Original Name"} defaultValue={data?.name} />
+        <Input
+          onChange={(value) => setWebname(value)}
+          text={"Name"}
+          defaultValue={data?.spanish_name}
+        ></Input>
+        {allPublishers.length > 0 && (
+          <Select
+            onChange={(value) => setPublishers(value)}
+            options={allPublishers}
+            text={"Editoriales"}
+            defaultValue={publishers}
+          ></Select>
+        )}
+        <img
+          onClick={onSave}
+          sx={{
+            width: "25px",
+            height: "auto",
+            alignSelf: "center",
+            justifySelf: "center",
+          }}
+          src={save_icon}
+        ></img>
+      </div>
     </div>
   );
 }
