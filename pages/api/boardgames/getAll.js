@@ -8,6 +8,8 @@ export default async (req, res) => {
             id
             name
             webname
+            designers
+            numVotes
           }
       }
     `,
