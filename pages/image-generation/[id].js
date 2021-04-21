@@ -17,6 +17,7 @@ import designers_black from "../../src/assets/designers-black.svg";
 import { get_designers } from "../../src/api/designers";
 import { get_categories } from "../../src/api/categories";
 import { get_mechanisms } from "../../src/api/mechanisms";
+import { get_publishers } from "../../src/api/publishers";
 
 export default function Boardgame() {
   const router = useRouter();
@@ -31,6 +32,7 @@ export default function Boardgame() {
   const [designers, setDesigners] = useState();
   const [categories, setCategories] = useState();
   const [mechanisms, setMechanisms] = useState();
+  const [publishers, setPublishers] = useState();
   console.log(boardgame);
   useEffect(() => {}, []);
 
@@ -40,12 +42,20 @@ export default function Boardgame() {
       getDesigners();
       getCategories();
       getMechanisms();
+      getPublishers();
     }
   }, [router.query.id]);
   let getBoardgame = async (id) => {
     const boardgame = await get_boardgame({ id });
     if (boardgame) {
       setBoardgame(boardgame);
+    }
+  };
+
+  let getPublishers = async (id) => {
+    const publishers = await get_publishers({ id });
+    if (publishers) {
+      setPublishers(publishers);
     }
   };
 
@@ -111,7 +121,7 @@ export default function Boardgame() {
         (mechanism) => mechanisms.find(({ id }) => id === mechanism).name
       ),
     ].reduce((acc, elem) => {
-      return acc + "#" + elem.replace(" and", "&").replace(" ", "") + " ";
+      return acc + "#" + elem.replaceAll(" and", "&").replaceAll(" ", "") + " ";
     }, []);
   }
 

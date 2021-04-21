@@ -4,6 +4,7 @@ import { jsx } from "theme-ui";
 import React, { useState, useEffect } from "react";
 import Input from "../../src/components/common/input";
 import Field from "../../src/components/common/field";
+import InputTextArea from "../../src/components/common/input-text-area";
 import Select from "../../src/components/common/multiple-select";
 import { get_publishers } from "../../src/api/publishers";
 
@@ -44,6 +45,7 @@ export default function Boardgame() {
     if (boardgame) {
       setBoardgame(boardgame);
       setWebname(boardgame.webname);
+      setDescription(boardgame.description);
       setPVP(boardgame.PVP);
       setPrice(boardgame.price);
       setStock(boardgame.stock);
@@ -55,6 +57,7 @@ export default function Boardgame() {
     const { error } = await update_boardgame({
       id: boardgame.id,
       webname,
+      description,
       price: parseFloat(price),
       PVP: parseFloat(PVP),
       active,
@@ -100,11 +103,19 @@ export default function Boardgame() {
       >
         <Field text={"Original Name"} defaultValue={boardgame?.name} />
         {boardgame && (
-          <Input
-            onChange={(value) => setWebname(value)}
-            text={"Name"}
-            defaultValue={webname}
-          ></Input>
+          <>
+            <Input
+              onChange={(value) => setWebname(value)}
+              text={"Name"}
+              defaultValue={webname}
+            ></Input>
+
+            <InputTextArea
+              onChange={(value) => setDescription(value)}
+              text={"Descripcion"}
+              defaultValue={description}
+            ></InputTextArea>
+          </>
         )}
         {allPublishers.length > 0 && (
           <Select

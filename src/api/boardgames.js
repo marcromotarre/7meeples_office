@@ -27,6 +27,7 @@ export const get_boardgame = async ({ id }) => {
 export const update_boardgame = async ({
   id,
   webname,
+  description,
   PVP,
   stock,
   price,
@@ -37,6 +38,7 @@ export const update_boardgame = async ({
     .post("/api/boardgames/update", {
       id,
       webname,
+      description,
       PVP,
       stock,
       price,

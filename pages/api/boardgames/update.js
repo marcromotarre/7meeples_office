@@ -1,7 +1,16 @@
 const { query } = require("../../../utils/hasura");
 
 export default async (req, res) => {
-  const { id, PVP, active, stock, price, webname, publishers } = req.body;
+  const {
+    id,
+    PVP,
+    active,
+    stock,
+    price,
+    webname,
+    publishers,
+    description,
+  } = req.body;
   const boardgame = await query({
     query: `
     mutation {
@@ -11,7 +20,8 @@ export default async (req, res) => {
                 active: ${active}, 
                 stock: ${stock}, 
                 price: ${price}, 
-                webname: "${webname}"
+                webname: "${webname}",
+                description:"${description}",
                 publishers: [${publishers}]
             }) {
                 active
