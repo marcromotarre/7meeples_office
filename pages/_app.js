@@ -1,4 +1,9 @@
 import "../styles/globals.css";
+import "../styles.css";
+/** @jsxRuntime classic /
+/* @jsx jsx */
+import { jsx } from "theme-ui";
+
 import { Provider } from "next-auth/client";
 import theme from "../utils/theme";
 import { ThemeProvider } from "theme-ui";

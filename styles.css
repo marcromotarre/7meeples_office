@@ -2,19 +2,23 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  width: 100%;
   font-family: Quicksand;
+}
+
+input {
+  font-family: Quicksand;
+}
+body {
+  background-color: red;
+}
+
+.safari.keyboard .app-container {
+  bottom: 270px;
 }
 
 a {
   color: inherit;
   text-decoration: none;
-}
-
-main {
-  width: 90%;
 }
 
 * {
@@ -49,4 +53,24 @@ main {
   font-family: "Quicksand";
   src: url("/fonts/Quicksand/static/Quicksand-Bold.ttf");
   font-weight: 500;
+}
+
+/* Fix Input Zoom on iPhone 6 Plus, iPhone 6s Plus, iPhone 7 Plus, iPhone 8, iPhone X, XS, XS Max  */
+@media screen and (device-aspect-ratio: 9/16) {
+  select,
+  textarea,
+  input[type="text"],
+  input[type="password"],
+  input[type="datetime"],
+  input[type="datetime-local"],
+  input[type="date"],
+  input[type="month"],
+  input[type="time"],
+  input[type="week"],
+  input[type="number"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="url"] {
+    font-size: 16px;
+  }
 }

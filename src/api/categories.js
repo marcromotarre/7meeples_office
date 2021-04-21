@@ -31,7 +31,6 @@ export const update_category = async ({
   description,
   image,
 }) => {
-  debugger;
   return await axios
     .post("/api/categories/update", {
       id,
