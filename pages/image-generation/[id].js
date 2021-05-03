@@ -18,10 +18,14 @@ import { get_designers } from "../../src/api/designers";
 import { get_categories } from "../../src/api/categories";
 import { get_mechanisms } from "../../src/api/mechanisms";
 import { get_publishers } from "../../src/api/publishers";
+import { getPublisherImage } from "../../src/components/boardgame/publishers";
 
 export default function Boardgame() {
   const router = useRouter();
   const { addToast } = useToast();
+
+  const [designersFontSize, setDesignersFontSize] = useState(60);
+  const [descriptionFontSize, setDescriptionFontSize] = useState(37);
 
   const [backgroundTransparency, setBackgroundTransparency] = useState(0.5);
   const [backgroundImage, setBackgroundImage] = useState();
@@ -56,6 +60,7 @@ export default function Boardgame() {
     const publishers = await get_publishers({ id });
     if (publishers) {
       setPublishers(publishers);
+      console.log(publishers);
     }
   };
 
@@ -124,12 +129,15 @@ export default function Boardgame() {
       return acc + "#" + elem.replaceAll(" and", "&").replaceAll(" ", "") + " ";
     }, []);
   }
+  const publishers_images = boardgame?.publishers.map((publisher) =>
+    getPublisherImage({ id: publisher })
+  );
 
   return (
     <div sx={{ display: "flex" }}>
       {boardgame && designers && categories && mechanisms && (
         <>
-          <div>
+          <div sx={{ position: "relative" }}>
             <div
               sx={{
                 zIndex: "-2",
@@ -138,6 +146,7 @@ export default function Boardgame() {
                 position: "absolute",
                 objectFit: "cover",
                 backgroundImage: `url(${backgroundImage})`,
+
                 backgroundSize: `${backgroundSize}%`,
                 backgroundPositionX: `${backgroundPositionX}%`,
                 backgroundPositionY: `${backgroundPositionY}%`,
@@ -163,7 +172,7 @@ export default function Boardgame() {
                 alignItems: "center",
                 gridTemplateColumns: "85px 67px 55px 64px auto 45px",
                 gridTemplateRows:
-                  "30px 150px 80px 90px 90px 20px 50px 50px 50px 50px 50px 50px 50px 50px 50px",
+                  "30px 150px 80px 90px 90px 20px 48px 48px 48px 48px 48px 48px 48px 48px 48px",
                 gridTemplateAreas: ` 
             ". . . . . ."
             "average average average average average average"
@@ -189,7 +198,7 @@ export default function Boardgame() {
                   numVotes={boardgame.numVotes}
                   styles={{ gridArea: "average" }}
                 />
-                <p
+                <h1
                   sx={{
                     gridArea: "name",
                     fontSize: "73px",
@@ -197,12 +206,22 @@ export default function Boardgame() {
                     fontWeight: "400",
                   }}
                 >
-                  {boardgame.webname}
-                </p>
+                  {boardgame.webname + "    "}
+                  <span
+                    sx={{
+                      fontSize: "41px",
+                      fontWeight: "300",
+                      height: "100%",
+                      verticalAlign: "middle",
+                    }}
+                  >
+                    ({boardgame.year})
+                  </span>
+                </h1>
                 <p
                   sx={{
                     gridArea: "description",
-                    fontSize: "37px",
+                    fontSize: `${descriptionFontSize}px`,
                     justifySelf: "start",
                     fontStyle: "italic",
                   }}
@@ -294,17 +313,27 @@ export default function Boardgame() {
                 <p
                   sx={{
                     gridArea: "designers",
-                    fontSize: "60px",
+                    fontSize: `${designersFontSize}px`,
                     justifySelf: "start",
                     fontWeight: "300",
                   }}
                 >
-                  {boardgame.designers.map(
-                    (designer) =>
-                      designers.find(({ id }) => id === designer).name
-                  )}
+                  {boardgame.designers
+                    .map(
+                      (designer) =>
+                        designers.find(({ id }) => id === designer).name
+                    )
+                    .reduce((acc, elem) => {
+                      return acc + ", " + elem;
+                    }, [])
+                    .substring(2)}
                 </p>
               </>
+            </div>
+            <div sx={{ position: "absolute", right: "30px", bottom: "0" }}>
+              {publishers_images.map((image) => (
+                <img src={image}></img>
+              ))}
             </div>
           </div>
           <div
@@ -333,6 +362,22 @@ export default function Boardgame() {
                 setBackgroundTransparency(event.target.value / 100);
               }}
             ></input>
+            <div>
+              <button
+                onClick={() => {
+                  setDescriptionFontSize(descriptionFontSize - 1);
+                }}
+              >
+                description Font Size
+              </button>
+              <button
+                onClick={() => {
+                  setDesignersFontSize(designersFontSize - 1);
+                }}
+              >
+                designers Font Size
+              </button>
+            </div>
             <div>
               <button
                 onClick={() => {

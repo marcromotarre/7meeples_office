@@ -51,7 +51,7 @@ export default function SectionNumberOfPlayers({
                 width: "83px",
                 height: "83px",
                 marginLeft: "2px",
-                marginTop: "-7px",
+                marginTop: "-15px",
               }}
               src={number_of_players_best_icon}
             ></img>
