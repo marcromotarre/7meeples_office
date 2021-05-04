@@ -204,7 +204,9 @@ export const BGGParser = async (gameData) => {
           )
         : [],
     },
-    image: gameData.boardgames.boardgame.image["#text"],
+    image: gameData.boardgames.boardgame.image
+      ? gameData.boardgames.boardgame.image["#text"]
+      : "",
     expansions: expansions(gameData.boardgames.boardgame.boardgameexpansion),
     expansionOf: expansionOf(gameData.boardgames.boardgame.boardgameexpansion),
     designers: designers(gameData.boardgames.boardgame.boardgamedesigner),

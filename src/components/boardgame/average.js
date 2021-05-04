@@ -43,9 +43,9 @@ export default function BoardgameAverage({
           sx={{
             textAlign: "center",
             width: "min-content",
-            left: "14%",
+            left: average_string === "10" ? "25px" : "14px",
             fontSize: "18px",
-            top: "22%",
+            top: "25px",
             color: "white",
             fontWeight: "400",
             fontSize: "47px",
