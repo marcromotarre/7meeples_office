@@ -37,8 +37,33 @@ import arrakis_black from "../../assets/arrakis.png";
 import sd_white from "../../assets/sd.png";
 import sd_black from "../../assets/sd.png";
 
+import ludonova_white from "../../assets/ludonova.png";
+import ludonova_black from "../../assets/ludonova.png";
+
+import cmon_white from "../../assets/cmon.png";
+import cmon_black from "../../assets/cmon.png";
+
+import tcg_white from "../../assets/tgc-factory.png";
+import tcg_black from "../../assets/tgc-factory.png";
+
+import fantasy_flight_white from "../../assets/fantasy-flight-games.png";
+import fantasy_flight_black from "../../assets/fantasy-flight-games.png";
+
+import mas_que_oca_white from "../../assets/mas-que-oca.png";
+import mas_que_oca_black from "../../assets/mas-que-oca.png";
+
 export const getPublisherImage = ({ id, theme = "white" }) => {
   switch (id) {
+    case 24883:
+      return getImage(mas_que_oca_white, mas_que_oca_black, theme);
+    case 17:
+      return getImage(fantasy_flight_white, fantasy_flight_black, theme);
+    case 38448:
+      return getImage(tcg_white, tcg_black, theme);
+    case 21608:
+      return getImage(cmon_white, cmon_black, theme);
+    case 16826:
+      return getImage(ludonova_white, ludonova_black, theme);
     case 36401:
       return getImage(arrakis_white, arrakis_black, theme);
     case 157:

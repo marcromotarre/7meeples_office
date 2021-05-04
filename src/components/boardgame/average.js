@@ -4,7 +4,12 @@ import { jsx } from "theme-ui";
 import React, { useEffect, useState } from "react";
 import hexa_black from "../../assets/hexa-black.svg";
 
-export default function BoardgameAverage({ styles, average, numVotes }) {
+export default function BoardgameAverage({
+  styles,
+  average,
+  numVotes,
+  theme = "white",
+}) {
   let num_votes_string = `${numVotes} votos`;
   if (numVotes >= 1000 && numVotes <= 10000) {
     num_votes_string = `${Math.round((numVotes / 1000) * 100) / 100}k votos`;
@@ -37,10 +42,10 @@ export default function BoardgameAverage({ styles, average, numVotes }) {
         <span
           sx={{
             textAlign: "center",
-            width: "100%",
-            left: "0",
+            width: "min-content",
+            left: "14%",
             fontSize: "18px",
-            top: "19%",
+            top: "22%",
             color: "white",
             fontWeight: "400",
             fontSize: "47px",
@@ -55,6 +60,7 @@ export default function BoardgameAverage({ styles, average, numVotes }) {
           fontSize: "20px",
           fontWeight: "100",
           fontStyle: "italic",
+          color: theme === "white" ? "black" : "white",
         }}
       >
         {num_votes_string}

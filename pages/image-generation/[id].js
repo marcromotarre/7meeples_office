@@ -10,10 +10,15 @@ import Average from "../../src/components/boardgame/average";
 import Players from "../../src/components/boardgame/players";
 
 import time_black from "../../src/assets/time-black.svg";
+import time_white from "../../src/assets/time-white.svg";
 import age_black from "../../src/assets/age-black.svg";
+import age_white from "../../src/assets/age-white.svg";
 import weight_black from "../../src/assets/weight-black.svg";
+import weight_white from "../../src/assets/weight-white.svg";
 import players_black from "../../src/assets/players-black.svg";
+import players_white from "../../src/assets/players-white.svg";
 import designers_black from "../../src/assets/designers-black.svg";
+import designers_white from "../../src/assets/designers-white.svg";
 import { get_designers } from "../../src/api/designers";
 import { get_categories } from "../../src/api/categories";
 import { get_mechanisms } from "../../src/api/mechanisms";
@@ -24,8 +29,15 @@ export default function Boardgame() {
   const router = useRouter();
   const { addToast } = useToast();
 
+  const [theme, setTheme] = useState("white");
+
+  const [nameFontSize, setNameFontSize] = useState(73);
   const [designersFontSize, setDesignersFontSize] = useState(60);
   const [descriptionFontSize, setDescriptionFontSize] = useState(37);
+  const [tagsFontSize, setTagsFontSize] = useState(37);
+  const [publisherSize, setPublisherSize] = useState(200);
+  const [publisherXPosition, setPublisherXPosition] = useState(30);
+  const [publisherYPosition, setPublisherYPosition] = useState(10);
 
   const [backgroundTransparency, setBackgroundTransparency] = useState(0.5);
   const [backgroundImage, setBackgroundImage] = useState();
@@ -159,7 +171,10 @@ export default function Boardgame() {
                 width: "1000px",
                 height: "1000px",
                 position: "absolute",
-                backgroundColor: `rgba(255,255,255,${backgroundTransparency})`,
+                backgroundColor:
+                  theme === "white"
+                    ? `rgba(255,255,255,${backgroundTransparency})`
+                    : `rgba(0,0,0,${backgroundTransparency})`,
               }}
             ></div>
             <div
@@ -172,7 +187,7 @@ export default function Boardgame() {
                 alignItems: "center",
                 gridTemplateColumns: "85px 67px 55px 64px auto 45px",
                 gridTemplateRows:
-                  "30px 150px 80px 90px 90px 20px 48px 48px 48px 48px 48px 48px 48px 48px 48px",
+                  "30px 150px min-content max-content max-content 20px 48px 48px 48px 48px 48px 48px 48px 48px 48px",
                 gridTemplateAreas: ` 
             ". . . . . ."
             "average average average average average average"
@@ -195,15 +210,17 @@ export default function Boardgame() {
               <>
                 <Average
                   average={boardgame.average}
+                  theme={theme}
                   numVotes={boardgame.numVotes}
                   styles={{ gridArea: "average" }}
                 />
                 <h1
                   sx={{
                     gridArea: "name",
-                    fontSize: "73px",
+                    fontSize: `${nameFontSize}px`,
                     justifySelf: "start",
                     fontWeight: "400",
+                    color: theme === "white" ? "black" : "white",
                   }}
                 >
                   {boardgame.webname + "    "}
@@ -213,6 +230,7 @@ export default function Boardgame() {
                       fontWeight: "300",
                       height: "100%",
                       verticalAlign: "middle",
+                      color: theme === "white" ? "black" : "white",
                     }}
                   >
                     ({boardgame.year})
@@ -224,24 +242,28 @@ export default function Boardgame() {
                     fontSize: `${descriptionFontSize}px`,
                     justifySelf: "start",
                     fontStyle: "italic",
+                    padding: "5px 0px",
+                    color: theme === "white" ? "black" : "white",
                   }}
                 >
                   {boardgame.description}
                 </p>
                 <p
                   sx={{
+                    lineHeight: "1em",
+                    padding: "10px 0px",
                     gridArea: "categories",
-                    fontSize: "37px",
+                    fontSize: `${tagsFontSize}px`,
                     justifySelf: "start",
                     fontWeight: "300",
-                    color: "#27AAE0",
+                    color: theme === "white" ? "#53a0bf" : "#27AAE0",
                   }}
                 >
                   {hashtags}
                 </p>
                 <img
                   sx={{ gridArea: "time-icon", height: "59px" }}
-                  src={time_black}
+                  src={theme === "white" ? time_black : time_white}
                 ></img>
                 <p
                   sx={{
@@ -249,6 +271,7 @@ export default function Boardgame() {
                     fontSize: "60px",
                     justifySelf: "start",
                     fontWeight: "300",
+                    color: theme === "white" ? "black" : "white",
                   }}
                 >
                   {play_time_string(
@@ -259,7 +282,7 @@ export default function Boardgame() {
 
                 <img
                   sx={{ gridArea: "age-icon", height: "39px" }}
-                  src={age_black}
+                  src={theme === "white" ? age_black : age_white}
                 ></img>
                 <p
                   sx={{
@@ -267,6 +290,7 @@ export default function Boardgame() {
                     fontSize: "60px",
                     justifySelf: "start",
                     fontWeight: "300",
+                    color: theme === "white" ? "black" : "white",
                   }}
                 >
                   {age_string(boardgame.age)}
@@ -274,7 +298,7 @@ export default function Boardgame() {
 
                 <img
                   sx={{ gridArea: "players-icon", height: "39px" }}
-                  src={players_black}
+                  src={theme === "white" ? players_black : players_white}
                 ></img>
                 {boardgame && (
                   <Players
@@ -283,6 +307,7 @@ export default function Boardgame() {
                       boardgame.numberOfPlayersNotRecommended
                     }
                     numberOfPlayers={boardgame.numberOfPlayers}
+                    theme={theme}
                     styles={{
                       gridArea: "players",
                       fontSize: "60px",
@@ -293,7 +318,7 @@ export default function Boardgame() {
                 )}
                 <img
                   sx={{ gridArea: "weight-icon", height: "20px" }}
-                  src={weight_black}
+                  src={theme === "white" ? weight_black : weight_white}
                 ></img>
                 <p
                   sx={{
@@ -301,6 +326,7 @@ export default function Boardgame() {
                     fontSize: "60px",
                     justifySelf: "start",
                     fontWeight: "300",
+                    color: theme === "white" ? "black" : "white",
                   }}
                 >
                   {weight_string(boardgame.weight)}
@@ -308,7 +334,7 @@ export default function Boardgame() {
 
                 <img
                   sx={{ gridArea: "designers-icon", height: "50px" }}
-                  src={designers_black}
+                  src={theme === "white" ? designers_black : designers_white}
                 ></img>
                 <p
                   sx={{
@@ -316,6 +342,7 @@ export default function Boardgame() {
                     fontSize: `${designersFontSize}px`,
                     justifySelf: "start",
                     fontWeight: "300",
+                    color: theme === "white" ? "black" : "white",
                   }}
                 >
                   {boardgame.designers
@@ -330,9 +357,15 @@ export default function Boardgame() {
                 </p>
               </>
             </div>
-            <div sx={{ position: "absolute", right: "30px", bottom: "0" }}>
+            <div
+              sx={{
+                position: "absolute",
+                right: `${publisherXPosition}px`,
+                bottom: `${publisherYPosition}px`,
+              }}
+            >
               {publishers_images.map((image) => (
-                <img src={image}></img>
+                <img sx={{ width: `${publisherSize}px` }} src={image}></img>
               ))}
             </div>
           </div>
@@ -363,19 +396,85 @@ export default function Boardgame() {
               }}
             ></input>
             <div>
+              <div
+                sx={{
+                  height: "20px",
+                  width: "20px",
+                  color: "white",
+                  border: "1px solid black",
+                }}
+                onClick={() => {
+                  setTheme("white");
+                }}
+              ></div>
+              <div
+                sx={{
+                  height: "20px",
+                  width: "20px",
+                  color: "black",
+                  border: "1px solid white",
+                }}
+                onClick={() => {
+                  setTheme("black");
+                }}
+              ></div>
+            </div>
+            <div>
+              <button
+                onClick={() => {
+                  setNameFontSize(nameFontSize + 1);
+                }}
+              >
+                + name
+              </button>
+              <button
+                onClick={() => {
+                  setNameFontSize(nameFontSize - 1);
+                }}
+              >
+                - name
+              </button>
+              <button
+                onClick={() => {
+                  setDescriptionFontSize(descriptionFontSize + 1);
+                }}
+              >
+                + description
+              </button>
               <button
                 onClick={() => {
                   setDescriptionFontSize(descriptionFontSize - 1);
                 }}
               >
-                description Font Size
+                - description
+              </button>
+              <button
+                onClick={() => {
+                  setTagsFontSize(tagsFontSize + 1);
+                }}
+              >
+                + tags
+              </button>
+              <button
+                onClick={() => {
+                  setTagsFontSize(tagsFontSize - 1);
+                }}
+              >
+                - tags
+              </button>
+              <button
+                onClick={() => {
+                  setDesignersFontSize(designersFontSize + 1);
+                }}
+              >
+                + designers
               </button>
               <button
                 onClick={() => {
                   setDesignersFontSize(designersFontSize - 1);
                 }}
               >
-                designers Font Size
+                - designers
               </button>
             </div>
             <div>
@@ -472,6 +571,52 @@ export default function Boardgame() {
                 }}
               >
                 Bottom x10
+              </button>
+            </div>
+            <div>
+              <button
+                onClick={() => {
+                  setPublisherSize(publisherSize - 1);
+                }}
+              >
+                Publisher --
+              </button>
+              <button
+                onClick={() => {
+                  setPublisherSize(publisherSize + 1);
+                }}
+              >
+                Publisher ++
+              </button>
+            </div>
+            <div>
+              <button
+                onClick={() => {
+                  setPublisherXPosition(publisherXPosition + 1);
+                }}
+              >
+                Publisher Left
+              </button>
+              <button
+                onClick={() => {
+                  setPublisherXPosition(publisherXPosition - 1);
+                }}
+              >
+                Publisher Right
+              </button>
+              <button
+                onClick={() => {
+                  setPublisherYPosition(publisherYPosition + 1);
+                }}
+              >
+                Publisher Top
+              </button>
+              <button
+                onClick={() => {
+                  setPublisherYPosition(publisherYPosition - 1);
+                }}
+              >
+                Publisher Bottom
               </button>
             </div>
             <div
